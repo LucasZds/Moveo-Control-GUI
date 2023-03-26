@@ -16,16 +16,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QToolBox,
-    QVBoxLayout, QWidget)
+    QLineEdit, QPushButton, QSizePolicy, QStackedWidget,
+    QToolBox, QVBoxLayout, QWidget)
 import rc_img
 
-class Ui_Widgete(object):
-    def setupUi(self, Widgete):
-        if not Widgete.objectName():
-            Widgete.setObjectName(u"Widgete")
-        Widgete.resize(710, 421)
-        Widgete.setMinimumSize(QSize(500, 300))
+class Ui_Widget(object):
+    def setupUi(self, Widget):
+        if not Widget.objectName():
+            Widget.setObjectName(u"Widget")
+        Widget.resize(710, 421)
+        Widget.setMinimumSize(QSize(500, 300))
         palette = QPalette()
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -58,8 +58,8 @@ class Ui_Widgete(object):
 #if QT_VERSION >= QT_VERSION_CHECK(5, 12, 0)
         palette.setBrush(QPalette.Disabled, QPalette.PlaceholderText, brush)
 #endif
-        Widgete.setPalette(palette)
-        Widgete.setStyleSheet(u"*{border:none;\n"
+        Widget.setPalette(palette)
+        Widget.setStyleSheet(u"*{border:none;\n"
 "background-color:rgb(0,174,239);\n"
 "color: white;\n"
 "}\n"
@@ -68,11 +68,11 @@ class Ui_Widgete(object):
 "\n"
 "\n"
 "")
-        self.horizontalLayout = QHBoxLayout(Widgete)
+        self.horizontalLayout = QHBoxLayout(Widget)
         self.horizontalLayout.setSpacing(0)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.slide_menu_container = QFrame(Widgete)
+        self.slide_menu_container = QFrame(Widget)
         self.slide_menu_container.setObjectName(u"slide_menu_container")
         self.slide_menu_container.setMinimumSize(QSize(0, 0))
         self.slide_menu_container.setMaximumSize(QSize(0, 16777215))
@@ -275,7 +275,7 @@ class Ui_Widgete(object):
 
         self.horizontalLayout.addWidget(self.slide_menu_container)
 
-        self.main_body = QFrame(Widgete)
+        self.main_body = QFrame(Widget)
         self.main_body.setObjectName(u"main_body")
         self.main_body.setFrameShape(QFrame.StyledPanel)
         self.main_body.setFrameShadow(QFrame.Raised)
@@ -416,6 +416,102 @@ class Ui_Widgete(object):
         self.main_body_content.setSizePolicy(sizePolicy)
         self.main_body_content.setFrameShape(QFrame.StyledPanel)
         self.main_body_content.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_12 = QVBoxLayout(self.main_body_content)
+        self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.stackedWidget = QStackedWidget(self.main_body_content)
+        self.stackedWidget.setObjectName(u"stackedWidget")
+        self.manualpar = QWidget()
+        self.manualpar.setObjectName(u"manualpar")
+        self.pushButton_2 = QPushButton(self.manualpar)
+        self.pushButton_2.setObjectName(u"pushButton_2")
+        self.pushButton_2.setGeometry(QRect(320, 160, 80, 24))
+        self.stackedWidget.addWidget(self.manualpar)
+        self.manualwebcam = QWidget()
+        self.manualwebcam.setObjectName(u"manualwebcam")
+        self.pushButton_3 = QPushButton(self.manualwebcam)
+        self.pushButton_3.setObjectName(u"pushButton_3")
+        self.pushButton_3.setGeometry(QRect(290, 170, 80, 24))
+        self.stackedWidget.addWidget(self.manualwebcam)
+        self.manualjoy = QWidget()
+        self.manualjoy.setObjectName(u"manualjoy")
+        self.pushButton = QPushButton(self.manualjoy)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setGeometry(QRect(280, 130, 80, 24))
+        self.stackedWidget.addWidget(self.manualjoy)
+        self.autaje = QWidget()
+        self.autaje.setObjectName(u"autaje")
+        self.pushButton_4 = QPushButton(self.autaje)
+        self.pushButton_4.setObjectName(u"pushButton_4")
+        self.pushButton_4.setGeometry(QRect(290, 140, 80, 24))
+        self.stackedWidget.addWidget(self.autaje)
+        self.autoJoy = QWidget()
+        self.autoJoy.setObjectName(u"autoJoy")
+        self.pushButton_5 = QPushButton(self.autoJoy)
+        self.pushButton_5.setObjectName(u"pushButton_5")
+        self.pushButton_5.setGeometry(QRect(300, 140, 80, 24))
+        self.stackedWidget.addWidget(self.autoJoy)
+        self.autopara = QWidget()
+        self.autopara.setObjectName(u"autopara")
+        self.pushButton_6 = QPushButton(self.autopara)
+        self.pushButton_6.setObjectName(u"pushButton_6")
+        self.pushButton_6.setGeometry(QRect(340, 140, 80, 24))
+        self.stackedWidget.addWidget(self.autopara)
+        self.mainPage = QWidget()
+        self.mainPage.setObjectName(u"mainPage")
+        self.horizontalLayout_8 = QHBoxLayout(self.mainPage)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.frame_12 = QFrame(self.mainPage)
+        self.frame_12.setObjectName(u"frame_12")
+        self.frame_12.setFrameShape(QFrame.StyledPanel)
+        self.frame_12.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_13 = QVBoxLayout(self.frame_12)
+        self.verticalLayout_13.setSpacing(0)
+        self.verticalLayout_13.setObjectName(u"verticalLayout_13")
+        self.verticalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.label_5 = QLabel(self.frame_12)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setPixmap(QPixmap(u":/icons/chevron-down.svg"))
+
+        self.verticalLayout_13.addWidget(self.label_5, 0, Qt.AlignHCenter|Qt.AlignBottom)
+
+        self.label_3 = QLabel(self.frame_12)
+        self.label_3.setObjectName(u"label_3")
+        font3 = QFont()
+        font3.setPointSize(20)
+        font3.setBold(True)
+        self.label_3.setFont(font3)
+
+        self.verticalLayout_13.addWidget(self.label_3, 0, Qt.AlignHCenter|Qt.AlignBottom)
+
+        self.label_6 = QLabel(self.frame_12)
+        self.label_6.setObjectName(u"label_6")
+
+        self.verticalLayout_13.addWidget(self.label_6, 0, Qt.AlignHCenter)
+
+        self.label_7 = QLabel(self.frame_12)
+        self.label_7.setObjectName(u"label_7")
+
+        self.verticalLayout_13.addWidget(self.label_7, 0, Qt.AlignHCenter)
+
+        self.label_4 = QLabel(self.frame_12)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setPixmap(QPixmap(u":/icons/arrow-left.svg"))
+
+        self.verticalLayout_13.addWidget(self.label_4, 0, Qt.AlignHCenter)
+
+
+        self.horizontalLayout_8.addWidget(self.frame_12)
+
+        self.stackedWidget.addWidget(self.mainPage)
+        self.autopred = QWidget()
+        self.autopred.setObjectName(u"autopred")
+        self.pushButton_15 = QPushButton(self.autopred)
+        self.pushButton_15.setObjectName(u"pushButton_15")
+        self.pushButton_15.setGeometry(QRect(310, 150, 80, 24))
+        self.stackedWidget.addWidget(self.autopred)
+
+        self.verticalLayout_12.addWidget(self.stackedWidget)
+
 
         self.verticalLayout.addWidget(self.main_body_content)
 
@@ -489,34 +585,47 @@ class Ui_Widgete(object):
         self.horizontalLayout.addWidget(self.main_body)
 
 
-        self.retranslateUi(Widgete)
+        self.retranslateUi(Widget)
 
         self.toolBox.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(6)
 
 
-        QMetaObject.connectSlotsByName(Widgete)
+        QMetaObject.connectSlotsByName(Widget)
     # setupUi
 
-    def retranslateUi(self, Widgete):
-        Widgete.setWindowTitle(QCoreApplication.translate("Widgete", u"Widget", None))
-        self.label_2.setText(QCoreApplication.translate("Widgete", u"Moveo Contol Panel", None))
-        self.pushButton_7.setText(QCoreApplication.translate("Widgete", u"Joystick", None))
-        self.pushButton_8.setText(QCoreApplication.translate("Widgete", u"Parametros", None))
-        self.pushButton_12.setText(QCoreApplication.translate("Widgete", u"WebCam", None))
-        self.toolBox.setItemText(self.toolBox.indexOf(self.page), QCoreApplication.translate("Widgete", u"Control Manual", None))
-        self.pushButton_11.setText(QCoreApplication.translate("Widgete", u"Ajedrez", None))
-        self.pushButton_10.setText(QCoreApplication.translate("Widgete", u"Joystick", None))
-        self.pushButton_9.setText(QCoreApplication.translate("Widgete", u"Parametros", None))
-        self.pushButton_13.setText(QCoreApplication.translate("Widgete", u"Predeterminados", None))
-        self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), QCoreApplication.translate("Widgete", u"Control Automatico", None))
-        self.exit_button.setText(QCoreApplication.translate("Widgete", u"EXIT", None))
+    def retranslateUi(self, Widget):
+        Widget.setWindowTitle(QCoreApplication.translate("Widget", u"Widget", None))
+        self.label_2.setText(QCoreApplication.translate("Widget", u"Moveo Contol Panel", None))
+        self.pushButton_7.setText(QCoreApplication.translate("Widget", u"Joystick", None))
+        self.pushButton_8.setText(QCoreApplication.translate("Widget", u"Parametros", None))
+        self.pushButton_12.setText(QCoreApplication.translate("Widget", u"WebCam", None))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page), QCoreApplication.translate("Widget", u"Control Manual", None))
+        self.pushButton_11.setText(QCoreApplication.translate("Widget", u"Ajedrez", None))
+        self.pushButton_10.setText(QCoreApplication.translate("Widget", u"Joystick", None))
+        self.pushButton_9.setText(QCoreApplication.translate("Widget", u"Parametros", None))
+        self.pushButton_13.setText(QCoreApplication.translate("Widget", u"Predeterminados", None))
+        self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), QCoreApplication.translate("Widget", u"Control Automatico", None))
+        self.exit_button.setText(QCoreApplication.translate("Widget", u"EXIT", None))
         self.open_close_side_bar_btn.setText("")
-        self.lineEdit.setPlaceholderText(QCoreApplication.translate("Widgete", u"Puerto COM", None))
+        self.lineEdit.setPlaceholderText(QCoreApplication.translate("Widget", u"Puerto COM", None))
         self.pushButton_14.setText("")
         self.minimize_window_button.setText("")
         self.restore_window_button.setText("")
         self.close_window_button.setText("")
-        self.label.setText(QCoreApplication.translate("Widgete", u"GUI - Moveo 2023", None))
+        self.pushButton_2.setText(QCoreApplication.translate("Widget", u"pagina2", None))
+        self.pushButton_3.setText(QCoreApplication.translate("Widget", u"webcam", None))
+        self.pushButton.setText(QCoreApplication.translate("Widget", u"pagina1", None))
+        self.pushButton_4.setText(QCoreApplication.translate("Widget", u"PushButton", None))
+        self.pushButton_5.setText(QCoreApplication.translate("Widget", u"PushButton", None))
+        self.pushButton_6.setText(QCoreApplication.translate("Widget", u"PushButton", None))
+        self.label_5.setText("")
+        self.label_3.setText(QCoreApplication.translate("Widget", u"Moveo Software Control", None))
+        self.label_6.setText(QCoreApplication.translate("Widget", u"Software Libre creado para controlar brazo robotico moveo", None))
+        self.label_7.setText(QCoreApplication.translate("Widget", u"Seleciona el puerto conectado a tu controlador y luego pasa a la seccion del menu", None))
+        self.label_4.setText("")
+        self.pushButton_15.setText(QCoreApplication.translate("Widget", u"PushButton", None))
+        self.label.setText(QCoreApplication.translate("Widget", u"GUI - Moveo 2023", None))
         self.GITbtn.setText("")
     # retranslateUi
 

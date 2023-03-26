@@ -249,7 +249,7 @@ color: white;
     <widget class="QFrame" name="slide_menu_container">
      <property name="minimumSize">
       <size>
-       <width>0</width>
+       <width>200</width>
        <height>0</height>
       </size>
      </property>
@@ -383,7 +383,7 @@ background-color:rgb(0,174,239);
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>160</width>
+                 <width>164</width>
                  <height>244</height>
                 </rect>
                </property>
@@ -495,7 +495,7 @@ background-color:rgb(0,174,239);
                 <rect>
                  <x>0</x>
                  <y>0</y>
-                 <width>160</width>
+                 <width>164</width>
                  <height>244</height>
                 </rect>
                </property>

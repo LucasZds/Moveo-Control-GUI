@@ -4,15 +4,17 @@ from PySide6 import QtCore
 from PySide6 import QtGui
 from PySide6.QtWidgets import *
 from PySide6.QtCore import QPropertyAnimation
-from ui_form import *
+from ui_form import * # Importar la interfaz gráfica creada en Qt Designer
+import webbrowser # Importar para abrir links
 
+# Ventana principal
 class MainWindow(QWidget):
     def __init__(self):
         QWidget.__init__(self)
-        self.ui = Ui_Widgete()
+        self.ui = Ui_Widget()  # Crear una instancia de la interfaz gráfica
         self.ui.setupUi(self)  
         
-        
+        # Configuracion general de la ventana
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint) 
         self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         self.shadow = QGraphicsDropShadowEffect(self)
@@ -22,20 +24,27 @@ class MainWindow(QWidget):
         self.shadow.setColor(QColor(0, 92, 157, 550))
         self.setWindowIcon(QtGui.QIcon(":/icons/github.svg"))
         self.setWindowTitle("Moveo Control Software")
-        QSizeGrip(self.ui.size_grip)
-
         
+        # Configurar la lógica de los botones de la ventana
+        QSizeGrip(self.ui.size_grip)
         self.ui.minimize_window_button.clicked.connect(lambda: self.showMinimized())
         self.ui.close_window_button.clicked.connect(lambda: self.close())
         self.ui.exit_button.clicked.connect(lambda: self.close())
-
         self.ui.restore_window_button.clicked.connect(lambda: self.restore_or_maximize_window())
-
-        self.ui.GITbtn.clicked.connect(self.Git)
         
-        def Git(self):
-               
+        # Configurar la lógica de los botones para cambiar entre los modos manual y automático
+        self.ui.pushButton_7.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.manualjoy))
+        self.ui.pushButton_8.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.manualpar))
+        self.ui.pushButton_12.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.manualwebcam))
+        self.ui.pushButton_11.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.autaje))
+        self.ui.pushButton_10.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.autoJoy)) 
+        self.ui.pushButton_9.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.autopara))
+        self.ui.pushButton_13.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.autopred))
 
+        # Configurar la lógica del botón para abrir un enlace de GitHub
+        self.ui.GITbtn.clicked.connect(self.Gitbtn)
+
+        # Configurar la lógica de los eventos de movimiento del ratón para la ventana
         def moveWindow(e):
             if self.isMaximized() == False: 
                 if e.buttons() == Qt.LeftButton:  
@@ -43,9 +52,17 @@ class MainWindow(QWidget):
                     self.clickPosition = e.globalPos()
                     e.accept()
         self.ui.header_frame.mouseMoveEvent = moveWindow
+        
+        # Configurar la lógica del botón para abrir o cerrar el menú lateral
         self.ui.open_close_side_bar_btn.clicked.connect(lambda: self.slideLeftMenu())
+        
         self.show()
-
+        
+    # Función para abrir el enlace de GitHub en el navegador predeterminado    
+    def Gitbtn(self):
+        webbrowser.open("https://github.com/LucasZds/Moveo-Control-GUI")
+    
+    # Función para animar y mostrar u ocultar el menú lateral
     def slideLeftMenu(self):
         width = self.ui.slide_menu_container.width()
         if width == 0:
@@ -54,7 +71,8 @@ class MainWindow(QWidget):
         else:
             newWidth = 0
             self.ui.open_close_side_bar_btn.setIcon(QtGui.QIcon(u":/icons/align-left.svg"))
-            
+
+        # Se crea una animación que cambia el ancho máximo del menú lateral de su ancho actual a un nuevo ancho
         self.animation = QPropertyAnimation(self.ui.slide_menu_container, b"maximumWidth")
         self.animation.setDuration(250)
         self.animation.setStartValue(width)
@@ -62,15 +80,11 @@ class MainWindow(QWidget):
         self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
         self.animation.start()
     
-
-
-
-
-
-    
+    # Función para guardar la posición global del mouse en la ventana al hacer clic
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
-        
+    
+    # Función para restaurar o maximizar la ventana
     def restore_or_maximize_window(self):
         if self.isMaximized():
             self.showNormal()
@@ -79,8 +93,12 @@ class MainWindow(QWidget):
             self.showMaximized()
             self.ui.restore_window_button.setIcon(QtGui.QIcon(u":/icons/minimize-2.svg"))
 
-
+# Código para iniciar la aplicación y mostrar la ventana principal
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    sys.exit(app.exec_())
+    try:
+        app = QApplication(sys.argv)
+        window = MainWindow()
+        sys.exit(app.exec_())
+    except Exception as e:
+        print(e)
+        sys.exit(1)
