@@ -15,9 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QPushButton, QSizePolicy, QStackedWidget,
-    QToolBox, QVBoxLayout, QWidget)
+from PySide6.QtOpenGLWidgets import QOpenGLWidget
+from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
+    QLabel, QLineEdit, QPushButton, QSizePolicy,
+    QStackedWidget, QToolBox, QVBoxLayout, QWidget)
 import rc_img
 
 class Ui_Widget(object):
@@ -417,14 +418,143 @@ class Ui_Widget(object):
         self.main_body_content.setFrameShape(QFrame.StyledPanel)
         self.main_body_content.setFrameShadow(QFrame.Raised)
         self.verticalLayout_12 = QVBoxLayout(self.main_body_content)
+        self.verticalLayout_12.setSpacing(0)
         self.verticalLayout_12.setObjectName(u"verticalLayout_12")
+        self.verticalLayout_12.setContentsMargins(0, 0, 0, 0)
         self.stackedWidget = QStackedWidget(self.main_body_content)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.manualpar = QWidget()
         self.manualpar.setObjectName(u"manualpar")
-        self.pushButton_2 = QPushButton(self.manualpar)
-        self.pushButton_2.setObjectName(u"pushButton_2")
-        self.pushButton_2.setGeometry(QRect(320, 160, 80, 24))
+        self.verticalLayout_14 = QVBoxLayout(self.manualpar)
+        self.verticalLayout_14.setSpacing(0)
+        self.verticalLayout_14.setObjectName(u"verticalLayout_14")
+        self.verticalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.frame_13 = QFrame(self.manualpar)
+        self.frame_13.setObjectName(u"frame_13")
+        self.frame_13.setFrameShape(QFrame.StyledPanel)
+        self.frame_13.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_9 = QHBoxLayout(self.frame_13)
+        self.horizontalLayout_9.setSpacing(0)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.frame_14 = QFrame(self.frame_13)
+        self.frame_14.setObjectName(u"frame_14")
+        self.frame_14.setFrameShape(QFrame.StyledPanel)
+        self.frame_14.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_10 = QHBoxLayout(self.frame_14)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.openGLWidget = QOpenGLWidget(self.frame_14)
+        self.openGLWidget.setObjectName(u"openGLWidget")
+
+        self.horizontalLayout_10.addWidget(self.openGLWidget)
+
+
+        self.horizontalLayout_9.addWidget(self.frame_14)
+
+        self.frame_15 = QFrame(self.frame_13)
+        self.frame_15.setObjectName(u"frame_15")
+        self.frame_15.setStyleSheet(u"QPushButton{\n"
+"background-color:rgb(0,174,239);\n"
+"border-radius:5px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color:rgb(0,26,39);\n"
+"}")
+        self.frame_15.setFrameShape(QFrame.StyledPanel)
+        self.frame_15.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_15 = QVBoxLayout(self.frame_15)
+        self.verticalLayout_15.setSpacing(0)
+        self.verticalLayout_15.setObjectName(u"verticalLayout_15")
+        self.verticalLayout_15.setContentsMargins(0, 0, 0, 0)
+        self.frame_16 = QFrame(self.frame_15)
+        self.frame_16.setObjectName(u"frame_16")
+        self.frame_16.setFrameShape(QFrame.StyledPanel)
+        self.frame_16.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_16 = QVBoxLayout(self.frame_16)
+        self.verticalLayout_16.setObjectName(u"verticalLayout_16")
+        self.frame_18 = QFrame(self.frame_16)
+        self.frame_18.setObjectName(u"frame_18")
+        self.frame_18.setFrameShape(QFrame.StyledPanel)
+        self.frame_18.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_17 = QVBoxLayout(self.frame_18)
+        self.verticalLayout_17.setSpacing(0)
+        self.verticalLayout_17.setObjectName(u"verticalLayout_17")
+        self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
+        self.checkBox = QCheckBox(self.frame_18)
+        self.checkBox.setObjectName(u"checkBox")
+        self.checkBox.setFont(font)
+
+        self.verticalLayout_17.addWidget(self.checkBox, 0, Qt.AlignHCenter)
+
+
+        self.verticalLayout_16.addWidget(self.frame_18)
+
+        self.frame_19 = QFrame(self.frame_16)
+        self.frame_19.setObjectName(u"frame_19")
+        self.frame_19.setFrameShape(QFrame.StyledPanel)
+        self.frame_19.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_18 = QVBoxLayout(self.frame_19)
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.frame_20 = QFrame(self.frame_19)
+        self.frame_20.setObjectName(u"frame_20")
+        self.frame_20.setFrameShape(QFrame.StyledPanel)
+        self.frame_20.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_11 = QHBoxLayout(self.frame_20)
+        self.horizontalLayout_11.setSpacing(0)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.pushButton_18 = QPushButton(self.frame_20)
+        self.pushButton_18.setObjectName(u"pushButton_18")
+        self.pushButton_18.setEnabled(False)
+        self.pushButton_18.setMinimumSize(QSize(30, 30))
+        icon13 = QIcon()
+        icon13.addFile(u":/icons/arrow-left.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_18.setIcon(icon13)
+        self.pushButton_18.setIconSize(QSize(30, 30))
+
+        self.horizontalLayout_11.addWidget(self.pushButton_18)
+
+        self.lineEdit_2 = QLineEdit(self.frame_20)
+        self.lineEdit_2.setObjectName(u"lineEdit_2")
+        self.lineEdit_2.setEnabled(False)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
+        self.lineEdit_2.setSizePolicy(sizePolicy2)
+        self.lineEdit_2.setFont(font2)
+        self.lineEdit_2.setStyleSheet(u"background-color:rgb(0,26,39);\n"
+"border-radius:5px;")
+        self.lineEdit_2.setAlignment(Qt.AlignCenter)
+
+        self.horizontalLayout_11.addWidget(self.lineEdit_2)
+
+        self.pushButton_19 = QPushButton(self.frame_20)
+        self.pushButton_19.setObjectName(u"pushButton_19")
+        self.pushButton_19.setEnabled(False)
+        self.pushButton_19.setMinimumSize(QSize(30, 30))
+        icon14 = QIcon()
+        icon14.addFile(u":/icons/arrow-right.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.pushButton_19.setIcon(icon14)
+        self.pushButton_19.setIconSize(QSize(30, 30))
+
+        self.horizontalLayout_11.addWidget(self.pushButton_19)
+
+
+        self.verticalLayout_18.addWidget(self.frame_20)
+
+
+        self.verticalLayout_16.addWidget(self.frame_19)
+
+
+        self.verticalLayout_15.addWidget(self.frame_16)
+
+
+        self.horizontalLayout_9.addWidget(self.frame_15)
+
+
+        self.verticalLayout_14.addWidget(self.frame_13)
+
         self.stackedWidget.addWidget(self.manualpar)
         self.manualwebcam = QWidget()
         self.manualwebcam.setObjectName(u"manualwebcam")
@@ -559,9 +689,9 @@ class Ui_Widget(object):
 "QPushButton:hover{\n"
 "background-color:rgb(0,26,39);\n"
 "}")
-        icon13 = QIcon()
-        icon13.addFile(u":/icons/globe.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.GITbtn.setIcon(icon13)
+        icon15 = QIcon()
+        icon15.addFile(u":/icons/globe.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.GITbtn.setIcon(icon15)
         self.GITbtn.setIconSize(QSize(30, 30))
 
         self.verticalLayout_3.addWidget(self.GITbtn, 0, Qt.AlignHCenter)
@@ -587,7 +717,7 @@ class Ui_Widget(object):
 
         self.retranslateUi(Widget)
 
-        self.toolBox.setCurrentIndex(0)
+        self.toolBox.setCurrentIndex(1)
         self.stackedWidget.setCurrentIndex(6)
 
 
@@ -613,7 +743,10 @@ class Ui_Widget(object):
         self.minimize_window_button.setText("")
         self.restore_window_button.setText("")
         self.close_window_button.setText("")
-        self.pushButton_2.setText(QCoreApplication.translate("Widget", u"pagina2", None))
+        self.checkBox.setText(QCoreApplication.translate("Widget", u"Manual", None))
+        self.pushButton_18.setText("")
+        self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("Widget", u"Valor", None))
+        self.pushButton_19.setText("")
         self.pushButton_3.setText(QCoreApplication.translate("Widget", u"webcam", None))
         self.pushButton.setText(QCoreApplication.translate("Widget", u"pagina1", None))
         self.pushButton_4.setText(QCoreApplication.translate("Widget", u"PushButton", None))

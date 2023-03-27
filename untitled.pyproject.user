@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 8.0.2, 2023-03-26T07:20:31. -->
+<!-- Written by QtCreator 8.0.2, 2023-03-26T23:01:07. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -140,15 +140,15 @@
     <valuelist type="QVariantList" key="CustomOutputParsers"/>
     <value type="int" key="PE.EnvironmentAspect.Base">2</value>
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">widget.py</value>
-    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/lucas/Desktop/UI_moveo/untitled/widget.py</value>
-    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/lucas/Desktop/UI_moveo/untitled/widget.py</value>
-    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\lucas\Desktop\UI_moveo\untitled\widget.py</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.DisplayName">widget.py2</value>
+    <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">PythonEditor.RunConfiguration.C:/Users/lucas/Desktop/UI_moveo/Moveo-Control-GUI/widget.py</value>
+    <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/lucas/Desktop/UI_moveo/Moveo-Control-GUI/widget.py</value>
+    <value type="QString" key="PythonEditor.RunConfiguation.Script">C:\Users\lucas\Desktop\UI_moveo\Moveo-Control-GUI\widget.py</value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseCppDebuggerAuto">true</value>
     <value type="bool" key="RunConfiguration.UseQmlDebugger">false</value>
     <value type="bool" key="RunConfiguration.UseQmlDebuggerAuto">true</value>
-    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/lucas/Desktop/UI_moveo/untitled</value>
+    <value type="QString" key="RunConfiguration.WorkingDirectory.default">C:/Users/lucas/Desktop/UI_moveo/Moveo-Control-GUI</value>
    </valuemap>
    <value type="qlonglong" key="ProjectExplorer.Target.RunConfigurationCount">1</value>
   </valuemap>

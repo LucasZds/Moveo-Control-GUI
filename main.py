@@ -56,11 +56,38 @@ class MainWindow(QWidget):
         # Configurar la lógica del botón para abrir o cerrar el menú lateral
         self.ui.open_close_side_bar_btn.clicked.connect(lambda: self.slideLeftMenu())
         
+        #--------------------------------Ventana 1--------------------------------
+        self.ui.pushButton_19.clicked.connect(self.sumavalor)
+        self.ui.pushButton_18.clicked.connect(self.restavalor)
+        self.ui.checkBox.clicked.connect(self.updateButtons)   
+        
+        #--------------------------------Ventana 1--------------------------------
         self.show()
         
     # Función para abrir el enlace de GitHub en el navegador predeterminado    
     def Gitbtn(self):
         webbrowser.open("https://github.com/LucasZds/Moveo-Control-GUI")
+        
+    def limites(self):
+        x = self.ui.lineEdit_2.text()
+        if x == "":
+            x=0
+        if int(x) > 179 :
+            x = "179"
+        if int(x) < -179 :
+            x = "-179"
+        return x
+        
+    def sumavalor(self):
+        x = self.limites()
+        self.ui.lineEdit_2.setText(str(int(x)+1)) 
+            
+    def restavalor(self):
+        x = self.limites()
+        self.ui.lineEdit_2.setText(str(int(x)-1)) 
+        
+    
+        
     
     # Función para animar y mostrar u ocultar el menú lateral
     def slideLeftMenu(self):
@@ -79,7 +106,17 @@ class MainWindow(QWidget):
         self.animation.setEndValue(newWidth)
         self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
         self.animation.start()
-    
+        
+    def updateButtons(self):
+        if self.ui.checkBox.isChecked():
+            self.ui.pushButton_18.setEnabled(True)
+            self.ui.pushButton_19.setEnabled(True)
+            self.ui.lineEdit_2.setEnabled(True)
+        else:
+            self.ui.pushButton_18.setEnabled(False)
+            self.ui.pushButton_19.setEnabled(False)
+            self.ui.lineEdit_2.setEnabled(False)
+        
     # Función para guardar la posición global del mouse en la ventana al hacer clic
     def mousePressEvent(self, event):
         self.clickPosition = event.globalPos()
