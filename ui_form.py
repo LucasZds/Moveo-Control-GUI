@@ -15,7 +15,6 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtOpenGLWidgets import QOpenGLWidget
 from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
     QLabel, QLineEdit, QPushButton, QSizePolicy,
     QStackedWidget, QToolBox, QVBoxLayout, QWidget)
@@ -77,6 +76,7 @@ class Ui_Widget(object):
         self.slide_menu_container.setObjectName(u"slide_menu_container")
         self.slide_menu_container.setMinimumSize(QSize(0, 0))
         self.slide_menu_container.setMaximumSize(QSize(0, 16777215))
+        self.slide_menu_container.setSizeIncrement(QSize(0, 0))
         self.slide_menu_container.setStyleSheet(u"*{background-color:rgb(0,26,39);}\n"
 "QPushButton{\n"
 "background-color:rgb(0,26,39);\n"
@@ -443,10 +443,10 @@ class Ui_Widget(object):
         self.frame_14.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_10 = QHBoxLayout(self.frame_14)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.openGLWidget = QOpenGLWidget(self.frame_14)
-        self.openGLWidget.setObjectName(u"openGLWidget")
+        self.label_8 = QLabel(self.frame_14)
+        self.label_8.setObjectName(u"label_8")
 
-        self.horizontalLayout_10.addWidget(self.openGLWidget)
+        self.horizontalLayout_10.addWidget(self.label_8, 0, Qt.AlignHCenter)
 
 
         self.horizontalLayout_9.addWidget(self.frame_14)
@@ -558,33 +558,229 @@ class Ui_Widget(object):
         self.stackedWidget.addWidget(self.manualpar)
         self.manualwebcam = QWidget()
         self.manualwebcam.setObjectName(u"manualwebcam")
-        self.pushButton_3 = QPushButton(self.manualwebcam)
-        self.pushButton_3.setObjectName(u"pushButton_3")
-        self.pushButton_3.setGeometry(QRect(290, 170, 80, 24))
+        self.verticalLayout_22 = QVBoxLayout(self.manualwebcam)
+        self.verticalLayout_22.setObjectName(u"verticalLayout_22")
+        self.frame_26 = QFrame(self.manualwebcam)
+        self.frame_26.setObjectName(u"frame_26")
+        self.frame_26.setFrameShape(QFrame.StyledPanel)
+        self.frame_26.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_16 = QHBoxLayout(self.frame_26)
+        self.horizontalLayout_16.setObjectName(u"horizontalLayout_16")
+        self.frame_27 = QFrame(self.frame_26)
+        self.frame_27.setObjectName(u"frame_27")
+        self.frame_27.setFrameShape(QFrame.StyledPanel)
+        self.frame_27.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_23 = QVBoxLayout(self.frame_27)
+        self.verticalLayout_23.setObjectName(u"verticalLayout_23")
+        self.label_13 = QLabel(self.frame_27)
+        self.label_13.setObjectName(u"label_13")
+        font3 = QFont()
+        font3.setPointSize(16)
+        font3.setBold(True)
+        self.label_13.setFont(font3)
+        self.label_13.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_23.addWidget(self.label_13)
+
+
+        self.horizontalLayout_16.addWidget(self.frame_27)
+
+        self.frame_28 = QFrame(self.frame_26)
+        self.frame_28.setObjectName(u"frame_28")
+        self.frame_28.setFrameShape(QFrame.StyledPanel)
+        self.frame_28.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_24 = QVBoxLayout(self.frame_28)
+        self.verticalLayout_24.setObjectName(u"verticalLayout_24")
+        self.label_14 = QLabel(self.frame_28)
+        self.label_14.setObjectName(u"label_14")
+        self.label_14.setFont(font3)
+        self.label_14.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_24.addWidget(self.label_14)
+
+
+        self.horizontalLayout_16.addWidget(self.frame_28)
+
+
+        self.verticalLayout_22.addWidget(self.frame_26)
+
         self.stackedWidget.addWidget(self.manualwebcam)
         self.manualjoy = QWidget()
         self.manualjoy.setObjectName(u"manualjoy")
-        self.pushButton = QPushButton(self.manualjoy)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setGeometry(QRect(280, 130, 80, 24))
+        self.horizontalLayout_12 = QHBoxLayout(self.manualjoy)
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.frame_17 = QFrame(self.manualjoy)
+        self.frame_17.setObjectName(u"frame_17")
+        self.frame_17.setFrameShape(QFrame.StyledPanel)
+        self.frame_17.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_13 = QHBoxLayout(self.frame_17)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.frame_21 = QFrame(self.frame_17)
+        self.frame_21.setObjectName(u"frame_21")
+        self.frame_21.setFrameShape(QFrame.StyledPanel)
+        self.frame_21.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_14 = QHBoxLayout(self.frame_21)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.label_9 = QLabel(self.frame_21)
+        self.label_9.setObjectName(u"label_9")
+
+        self.horizontalLayout_14.addWidget(self.label_9, 0, Qt.AlignHCenter)
+
+
+        self.horizontalLayout_13.addWidget(self.frame_21)
+
+        self.frame_22 = QFrame(self.frame_17)
+        self.frame_22.setObjectName(u"frame_22")
+        self.frame_22.setFrameShape(QFrame.StyledPanel)
+        self.frame_22.setFrameShadow(QFrame.Raised)
+
+        self.horizontalLayout_13.addWidget(self.frame_22)
+
+
+        self.horizontalLayout_12.addWidget(self.frame_17)
+
         self.stackedWidget.addWidget(self.manualjoy)
         self.autaje = QWidget()
         self.autaje.setObjectName(u"autaje")
-        self.pushButton_4 = QPushButton(self.autaje)
-        self.pushButton_4.setObjectName(u"pushButton_4")
-        self.pushButton_4.setGeometry(QRect(290, 140, 80, 24))
+        self.horizontalLayout_15 = QHBoxLayout(self.autaje)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.frame_23 = QFrame(self.autaje)
+        self.frame_23.setObjectName(u"frame_23")
+        self.frame_23.setFrameShape(QFrame.StyledPanel)
+        self.frame_23.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_20 = QVBoxLayout(self.frame_23)
+        self.verticalLayout_20.setObjectName(u"verticalLayout_20")
+        self.frame_24 = QFrame(self.frame_23)
+        self.frame_24.setObjectName(u"frame_24")
+        self.frame_24.setAutoFillBackground(False)
+        self.frame_24.setFrameShape(QFrame.StyledPanel)
+        self.frame_24.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_19 = QVBoxLayout(self.frame_24)
+        self.verticalLayout_19.setObjectName(u"verticalLayout_19")
+        self.label_10 = QLabel(self.frame_24)
+        self.label_10.setObjectName(u"label_10")
+        self.label_10.setFont(font3)
+        self.label_10.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_19.addWidget(self.label_10)
+
+
+        self.verticalLayout_20.addWidget(self.frame_24)
+
+        self.frame_25 = QFrame(self.frame_23)
+        self.frame_25.setObjectName(u"frame_25")
+        self.frame_25.setFrameShape(QFrame.StyledPanel)
+        self.frame_25.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_21 = QVBoxLayout(self.frame_25)
+        self.verticalLayout_21.setObjectName(u"verticalLayout_21")
+        self.label_11 = QLabel(self.frame_25)
+        self.label_11.setObjectName(u"label_11")
+        self.label_11.setFont(font3)
+        self.label_11.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_21.addWidget(self.label_11)
+
+        self.label_12 = QLabel(self.frame_25)
+        self.label_12.setObjectName(u"label_12")
+        self.label_12.setFont(font3)
+        self.label_12.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_21.addWidget(self.label_12)
+
+
+        self.verticalLayout_20.addWidget(self.frame_25)
+
+
+        self.horizontalLayout_15.addWidget(self.frame_23)
+
         self.stackedWidget.addWidget(self.autaje)
         self.autoJoy = QWidget()
         self.autoJoy.setObjectName(u"autoJoy")
-        self.pushButton_5 = QPushButton(self.autoJoy)
-        self.pushButton_5.setObjectName(u"pushButton_5")
-        self.pushButton_5.setGeometry(QRect(300, 140, 80, 24))
+        self.horizontalLayout_19 = QHBoxLayout(self.autoJoy)
+        self.horizontalLayout_19.setObjectName(u"horizontalLayout_19")
+        self.frame_34 = QFrame(self.autoJoy)
+        self.frame_34.setObjectName(u"frame_34")
+        self.frame_34.setFrameShape(QFrame.StyledPanel)
+        self.frame_34.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_20 = QHBoxLayout(self.frame_34)
+        self.horizontalLayout_20.setObjectName(u"horizontalLayout_20")
+        self.frame_35 = QFrame(self.frame_34)
+        self.frame_35.setObjectName(u"frame_35")
+        self.frame_35.setFrameShape(QFrame.StyledPanel)
+        self.frame_35.setFrameShadow(QFrame.Raised)
+        self.label_19 = QLabel(self.frame_35)
+        self.label_19.setObjectName(u"label_19")
+        self.label_19.setGeometry(QRect(50, 110, 141, 16))
+
+        self.horizontalLayout_20.addWidget(self.frame_35)
+
+        self.frame_36 = QFrame(self.frame_34)
+        self.frame_36.setObjectName(u"frame_36")
+        self.frame_36.setFrameShape(QFrame.StyledPanel)
+        self.frame_36.setFrameShadow(QFrame.Raised)
+        self.label_20 = QLabel(self.frame_36)
+        self.label_20.setObjectName(u"label_20")
+        self.label_20.setGeometry(QRect(38, 120, 101, 20))
+
+        self.horizontalLayout_20.addWidget(self.frame_36)
+
+        self.frame_37 = QFrame(self.frame_34)
+        self.frame_37.setObjectName(u"frame_37")
+        self.frame_37.setFrameShape(QFrame.StyledPanel)
+        self.frame_37.setFrameShadow(QFrame.Raised)
+        self.label_21 = QLabel(self.frame_37)
+        self.label_21.setObjectName(u"label_21")
+        self.label_21.setGeometry(QRect(100, 130, 49, 16))
+
+        self.horizontalLayout_20.addWidget(self.frame_37)
+
+
+        self.horizontalLayout_19.addWidget(self.frame_34)
+
         self.stackedWidget.addWidget(self.autoJoy)
         self.autopara = QWidget()
         self.autopara.setObjectName(u"autopara")
-        self.pushButton_6 = QPushButton(self.autopara)
-        self.pushButton_6.setObjectName(u"pushButton_6")
-        self.pushButton_6.setGeometry(QRect(340, 140, 80, 24))
+        self.horizontalLayout_17 = QHBoxLayout(self.autopara)
+        self.horizontalLayout_17.setObjectName(u"horizontalLayout_17")
+        self.frame_30 = QFrame(self.autopara)
+        self.frame_30.setObjectName(u"frame_30")
+        self.frame_30.setFrameShape(QFrame.StyledPanel)
+        self.frame_30.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_18 = QHBoxLayout(self.frame_30)
+        self.horizontalLayout_18.setObjectName(u"horizontalLayout_18")
+        self.frame_31 = QFrame(self.frame_30)
+        self.frame_31.setObjectName(u"frame_31")
+        self.frame_31.setFrameShape(QFrame.StyledPanel)
+        self.frame_31.setFrameShadow(QFrame.Raised)
+        self.label_16 = QLabel(self.frame_31)
+        self.label_16.setObjectName(u"label_16")
+        self.label_16.setGeometry(QRect(50, 130, 101, 16))
+
+        self.horizontalLayout_18.addWidget(self.frame_31)
+
+        self.frame_33 = QFrame(self.frame_30)
+        self.frame_33.setObjectName(u"frame_33")
+        self.frame_33.setFrameShape(QFrame.StyledPanel)
+        self.frame_33.setFrameShadow(QFrame.Raised)
+        self.label_17 = QLabel(self.frame_33)
+        self.label_17.setObjectName(u"label_17")
+        self.label_17.setGeometry(QRect(50, 130, 49, 16))
+
+        self.horizontalLayout_18.addWidget(self.frame_33)
+
+        self.frame_32 = QFrame(self.frame_30)
+        self.frame_32.setObjectName(u"frame_32")
+        self.frame_32.setFrameShape(QFrame.StyledPanel)
+        self.frame_32.setFrameShadow(QFrame.Raised)
+        self.label_18 = QLabel(self.frame_32)
+        self.label_18.setObjectName(u"label_18")
+        self.label_18.setGeometry(QRect(80, 140, 101, 16))
+
+        self.horizontalLayout_18.addWidget(self.frame_32)
+
+
+        self.horizontalLayout_17.addWidget(self.frame_30)
+
         self.stackedWidget.addWidget(self.autopara)
         self.mainPage = QWidget()
         self.mainPage.setObjectName(u"mainPage")
@@ -606,10 +802,10 @@ class Ui_Widget(object):
 
         self.label_3 = QLabel(self.frame_12)
         self.label_3.setObjectName(u"label_3")
-        font3 = QFont()
-        font3.setPointSize(20)
-        font3.setBold(True)
-        self.label_3.setFont(font3)
+        font4 = QFont()
+        font4.setPointSize(20)
+        font4.setBold(True)
+        self.label_3.setFont(font4)
 
         self.verticalLayout_13.addWidget(self.label_3, 0, Qt.AlignHCenter|Qt.AlignBottom)
 
@@ -635,9 +831,18 @@ class Ui_Widget(object):
         self.stackedWidget.addWidget(self.mainPage)
         self.autopred = QWidget()
         self.autopred.setObjectName(u"autopred")
-        self.pushButton_15 = QPushButton(self.autopred)
-        self.pushButton_15.setObjectName(u"pushButton_15")
-        self.pushButton_15.setGeometry(QRect(310, 150, 80, 24))
+        self.verticalLayout_25 = QVBoxLayout(self.autopred)
+        self.verticalLayout_25.setObjectName(u"verticalLayout_25")
+        self.frame_29 = QFrame(self.autopred)
+        self.frame_29.setObjectName(u"frame_29")
+        self.frame_29.setFrameShape(QFrame.StyledPanel)
+        self.frame_29.setFrameShadow(QFrame.Raised)
+        self.label_15 = QLabel(self.frame_29)
+        self.label_15.setObjectName(u"label_15")
+        self.label_15.setGeometry(QRect(290, 170, 151, 16))
+
+        self.verticalLayout_25.addWidget(self.frame_29)
+
         self.stackedWidget.addWidget(self.autopred)
 
         self.verticalLayout_12.addWidget(self.stackedWidget)
@@ -717,7 +922,7 @@ class Ui_Widget(object):
 
         self.retranslateUi(Widget)
 
-        self.toolBox.setCurrentIndex(1)
+        self.toolBox.setCurrentIndex(0)
         self.stackedWidget.setCurrentIndex(6)
 
 
@@ -743,21 +948,29 @@ class Ui_Widget(object):
         self.minimize_window_button.setText("")
         self.restore_window_button.setText("")
         self.close_window_button.setText("")
+        self.label_8.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
         self.checkBox.setText(QCoreApplication.translate("Widget", u"Manual", None))
         self.pushButton_18.setText("")
         self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("Widget", u"Valor", None))
         self.pushButton_19.setText("")
-        self.pushButton_3.setText(QCoreApplication.translate("Widget", u"webcam", None))
-        self.pushButton.setText(QCoreApplication.translate("Widget", u"pagina1", None))
-        self.pushButton_4.setText(QCoreApplication.translate("Widget", u"PushButton", None))
-        self.pushButton_5.setText(QCoreApplication.translate("Widget", u"PushButton", None))
-        self.pushButton_6.setText(QCoreApplication.translate("Widget", u"PushButton", None))
+        self.label_13.setText(QCoreApplication.translate("Widget", u"Webcam con vectores del brazo", None))
+        self.label_14.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
+        self.label_9.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
+        self.label_10.setText(QCoreApplication.translate("Widget", u"Proximamente...", None))
+        self.label_11.setText(QCoreApplication.translate("Widget", u"Se dise\u00f1ar\u00e1 e implementar\u00e1 mediante una IA ", None))
+        self.label_12.setText(QCoreApplication.translate("Widget", u"la interactuar con un tablero de ajedrez", None))
+        self.label_19.setText(QCoreApplication.translate("Widget", u"posicion inicial 3d design", None))
+        self.label_20.setText(QCoreApplication.translate("Widget", u"posicion final 3d", None))
+        self.label_21.setText(QCoreApplication.translate("Widget", u"boton simulaicon", None))
+        self.label_16.setText(QCoreApplication.translate("Widget", u"3D DESIGN inicio", None))
+        self.label_17.setText(QCoreApplication.translate("Widget", u"3D DESIGN final", None))
+        self.label_18.setText(QCoreApplication.translate("Widget", u"boton simulacion", None))
         self.label_5.setText("")
         self.label_3.setText(QCoreApplication.translate("Widget", u"Moveo Software Control", None))
         self.label_6.setText(QCoreApplication.translate("Widget", u"Software Libre creado para controlar brazo robotico moveo", None))
         self.label_7.setText(QCoreApplication.translate("Widget", u"Seleciona el puerto conectado a tu controlador y luego pasa a la seccion del menu", None))
         self.label_4.setText("")
-        self.pushButton_15.setText(QCoreApplication.translate("Widget", u"PushButton", None))
+        self.label_15.setText(QCoreApplication.translate("Widget", u"Acciones predeterminadas", None))
         self.label.setText(QCoreApplication.translate("Widget", u"GUI - Moveo 2023", None))
         self.GITbtn.setText("")
     # retranslateUi

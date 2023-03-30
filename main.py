@@ -61,6 +61,10 @@ class MainWindow(QWidget):
         self.ui.pushButton_18.clicked.connect(self.restavalor)
         self.ui.checkBox.clicked.connect(self.updateButtons)   
         
+        #-- opengl --#
+    
+       
+        
         #--------------------------------Ventana 1--------------------------------
         self.show()
         

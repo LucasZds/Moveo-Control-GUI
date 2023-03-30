@@ -1,0 +1,11 @@
+Descarga la biblioteca de AccelStepper desde el sitio web oficial: https://www.airspayce.com/mikem/arduino/AccelStepper/
+
+Descomprime el archivo descargado.
+
+Abre el software de Arduino IDE.
+
+Selecciona el menú "Sketch" y luego "Include Library" -> "Add .ZIP Library...".
+
+Navega hasta la ubicación donde descargaste y descomprimiste la biblioteca de AccelStepper y selecciónala.
+
+El software de Arduino IDE instalará la biblioteca automáticamente.
