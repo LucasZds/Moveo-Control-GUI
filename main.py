@@ -1,12 +1,13 @@
 import sys
 import os
+import serial
 from PySide6 import QtCore
 from PySide6 import QtGui
 from PySide6.QtWidgets import *
 from PySide6.QtCore import QPropertyAnimation
 from ui_form import * # Importar la interfaz gráfica creada en Qt Designer
 import webbrowser # Importar para abrir links
-
+ser = "COM5"
 # Ventana principal
 class MainWindow(QWidget):
     def __init__(self):
@@ -44,6 +45,9 @@ class MainWindow(QWidget):
         # Configurar la lógica del botón para abrir un enlace de GitHub
         self.ui.GITbtn.clicked.connect(self.Gitbtn)
 
+        # Establecemos Comunicacion SERIAL
+        self.ui.pushButton_14.clicked.connect(self.ComunicacionARD)
+        
         # Configurar la lógica de los eventos de movimiento del ratón para la ventana
         def moveWindow(e):
             if self.isMaximized() == False: 
@@ -61,12 +65,12 @@ class MainWindow(QWidget):
         self.ui.pushButton_18.clicked.connect(self.restavalor)
         self.ui.checkBox.clicked.connect(self.updateButtons)   
         
-        #-- opengl --#
-    
-       
-        
         #--------------------------------Ventana 1--------------------------------
         self.show()
+    # Función para la comunicacion del Arduino   
+    def ComunicacionARD(self):
+        ser = serial.Serial(self.ui.lineEdit.text, baudrate=9600)  
+       
         
     # Función para abrir el enlace de GitHub en el navegador predeterminado    
     def Gitbtn(self):
@@ -82,13 +86,21 @@ class MainWindow(QWidget):
             x = "-179"
         return x
         
+    '''Metodo envio de datos 
+    "0-0 0-0 0-0 0-0 0-0 0-0"
+motor6_en-motor6_dir motor5_en-motor5_dir motor4_en-motor4_dir motor3_en-motor3_dir motor2_en-motor2_dir motor1_en-motor1_dir        
+       datos = b'000000000000'  # Datos a enviar (en formato bytes)
+       ser.write(datos) # Enviar                                            '''    
+        
     def sumavalor(self):
         x = self.limites()
-        self.ui.lineEdit_2.setText(str(int(x)+1)) 
+        self.ui.lineEdit_2.setText(str(int(x)+1))
+
             
     def restavalor(self):
         x = self.limites()
-        self.ui.lineEdit_2.setText(str(int(x)-1)) 
+        self.ui.lineEdit_2.setText(str(int(x)-1))
+
         
     
         
