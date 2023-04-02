@@ -7,7 +7,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import QPropertyAnimation
 from ui_form import * # Importar la interfaz gráfica creada en Qt Designer
 import webbrowser # Importar para abrir links
-ser = "COM5"
+import time
 # Ventana principal
 class MainWindow(QWidget):
     def __init__(self):
@@ -32,6 +32,7 @@ class MainWindow(QWidget):
         self.ui.close_window_button.clicked.connect(lambda: self.close())
         self.ui.exit_button.clicked.connect(lambda: self.close())
         self.ui.restore_window_button.clicked.connect(lambda: self.restore_or_maximize_window())
+        
         
         # Configurar la lógica de los botones para cambiar entre los modos manual y automático
         self.ui.pushButton_7.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.manualjoy))
@@ -88,18 +89,29 @@ class MainWindow(QWidget):
         
     '''Metodo envio de datos 
     "0-0 0-0 0-0 0-0 0-0 0-0"
-motor6_en-motor6_dir motor5_en-motor5_dir motor4_en-motor4_dir motor3_en-motor3_dir motor2_en-motor2_dir motor1_en-motor1_dir        
+       motor6_en-motor6_dir motor5_en-motor5_dir motor4_en-motor4_dir motor3_en-motor3_dir motor2_en-motor2_dir motor1_en-motor1_dir        
        datos = b'000000000000'  # Datos a enviar (en formato bytes)
        ser.write(datos) # Enviar                                            '''    
         
     def sumavalor(self):
         x = self.limites()
         self.ui.lineEdit_2.setText(str(int(x)+1))
-
+        if int(x) < 180 :
+            ser = serial.Serial('COM4', baudrate=9600) 
+            datos = b'0000000000000010'  # Datos a enviar (en formato bytes)
+            ser.write(datos) # Enviar
+        datos = b'0000000000000000'  # Datos a enviar (en formato bytes)
+        ser.write(datos) # Enviar   
             
     def restavalor(self):
         x = self.limites()
         self.ui.lineEdit_2.setText(str(int(x)-1))
+        if int(x) > -180 :
+            ser = serial.Serial('COM4', baudrate=9600) 
+            datos = b'000000000000011'  # Datos a enviar (en formato bytes)
+            ser.write(datos) # Enviar
+        datos = b'0000000000000000'  # Datos a enviar (en formato bytes)
+        ser.write(datos) # Enviar
 
         
     
