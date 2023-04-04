@@ -2,6 +2,7 @@ import sys
 import os
 import serial
 import cv2
+import math
 import pybullet as p
 import mediapipe as mp
 import webbrowser # Importar para abrir links
@@ -101,15 +102,21 @@ class MainWindow(QWidget):
         self.ui.horizontalSlider_4.valueChanged.connect(self.actualizar_articulacion_4)
         self.ui.horizontalSlider_2.valueChanged.connect(self.actualizar_articulacion_5)
         self.ui.horizontalSlider.valueChanged.connect(self.actualizar_articulacion_6)
+        #inicialmente se necesia comunicacion con arduino
         #--------------------------------Parametros--------------------------------
 
         #--------------------------------Camara--------------------------------
         self.capture = cv2.VideoCapture(1)
+        self.mpDraw = mp.solutions.drawing_utils
+        self.mpPose = mp.solutions.pose
+        self.pose = self.mpPose.Pose()
+        self.angulo = 0
+        self.angulocuerpo=0
         self.ui.timer = QTimer(self)
         self.ui.timer.start(60)
         self.ui.timer.timeout.connect(self.update_image)
         
-        #queda sacar angulos de movimiento para pasar a simulacion y comunicacion a ardduino
+        #queda comunicacion a ardduino
         
         #--------------------------------Camara--------------------------------
         
@@ -134,8 +141,8 @@ class MainWindow(QWidget):
         #--------------------------------Predeterminados--------------------------------
         #--------------------------------Automaticos--------------------------------
         self.show()
-        '''
-        base_link
+        
+        '''base_link
         odom_joint
         Joint_1
         Joint_2
@@ -201,22 +208,61 @@ class MainWindow(QWidget):
         if self.index==2 :
             self.ui.labelrobparam.setPixmap(pixmap)
         if self.index==3 :
+            self.actualizar_articulacion_2_cam(self.angulo)
+            self.actualizar_articulacion_3_cam(self.angulocuerpo)
             self.ui.label_14.setPixmap(pixmap)
+            
+    def actualizar_articulacion_2_cam(self, angulo):
+        # Convierte el valor del slider al rango de valores aceptable para la articulación
+        valor_articulacion = (angulo-50)/255
+        valor_articulacion1 = (angulo-80)/255
+        # Actualiza la posición de la articulación en PyBullet
+        p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+        p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
         
-        
+    def actualizar_articulacion_3_cam(self, angulo):
+        # Convierte el valor del slider al rango de valores aceptable para la articulación
+        valor_articulacion1 = (angulo-80)/255
+        p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
+          
+          
     def update_image(self):
         if self.index == 3:
-            mpDraw = mp.solutions.drawing_utils
-            mpPose = mp.solutions.pose
-            pose = mpPose.Pose()
             success, img = self.capture.read()
-            results = pose.process(img)
-            mpDraw.draw_landmarks(img, results.pose_landmarks, mpPose.POSE_CONNECTIONS)
-            for id, lm in enumerate(results.pose_landmarks.landmark):
-                    h, w, c = img.shape
-                    print(id, lm)
-                    cx, cy = int(lm.x * w), int(lm.y * h)
-                    cv2.circle(img, (cx, cy), 5, (255, 0, 0), cv2.FILLED) 
+            results = self.pose.process(img)
+            landmarks = results.pose_landmarks.landmark
+            
+            # Obtener los puntos de referencia de la muñeca, el codo y el hombro del brazo derecho
+            wrist = landmarks[self.mpPose.PoseLandmark.RIGHT_WRIST]
+            elbow = landmarks[self.mpPose.PoseLandmark.RIGHT_ELBOW]
+            shoulder = landmarks[self.mpPose.PoseLandmark.RIGHT_SHOULDER]
+            nose = landmarks[self.mpPose.PoseLandmark.NOSE]
+
+            # Calcular el ángulo del codo utilizando funciones trigonométricas
+            angle = math.degrees(math.atan2(wrist.y - elbow.y, wrist.x - elbow.x) -
+                                math.atan2(shoulder.y - elbow.y, shoulder.x - elbow.x))
+            angle = round(angle, 2)
+
+            angle_body = math.degrees(math.atan2(nose.y - shoulder.y, nose.x - shoulder.x) -
+                                  math.atan2(nose.y - elbow.y, nose.x - elbow.x))
+            angle_body = round(angle_body, 2)
+            cv2.putText(img, f"Angulo rotacion: {int(angle_body*-1)}", (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+            if int(angle_body*-1) < 90 and int(angle_body*-1) > -50:
+                self.angulocuerpo=angle_body*10
+            cv2.putText(img, f"Angulo brazo: {int(angle*-1)}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)    
+            if int(angle*-1) < 190 and int(angle*-1) > -50:
+                self.angulo = int(angle*-2)
+
+            # Mostrar los puntos de los brazos y la línea del brazo derecho
+            x1, y1 = int(wrist.x * img.shape[1]), int(wrist.y * img.shape[0])
+            x2, y2 = int(elbow.x * img.shape[1]), int(elbow.y * img.shape[0])
+            x3, y3 = int(shoulder.x * img.shape[1]), int(shoulder.y * img.shape[0])
+            cv2.circle(img, (x1, y1), 5, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, (x2, y2), 5, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, (x3, y3), 5, (0, 255, 0), cv2.FILLED)
+            cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
+            cv2.line(img, (x2, y2), (x3, y3), (255, 0, 0), 2)
+
             image = QImage(img, img.shape[1], img.shape[0], QImage.Format_RGB888)
             # Mostrar el QImage en el QLabel
             self.ui.label_13.setPixmap(QPixmap.fromImage(image))
