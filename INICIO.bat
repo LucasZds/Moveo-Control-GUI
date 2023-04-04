@@ -7,3 +7,4 @@ pip install PyQt5
 pip install opencv-python
 pip install mediapipe
 pip install cvzone
+pip install pybullet

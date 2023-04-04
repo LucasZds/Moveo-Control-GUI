@@ -15,8 +15,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QCheckBox, QFrame, QHBoxLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QLineEdit, QPushButton, QSizePolicy, QSlider,
     QStackedWidget, QToolBox, QVBoxLayout, QWidget)
 import rc_img
 
@@ -443,10 +443,10 @@ class Ui_Widget(object):
         self.frame_14.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_10 = QHBoxLayout(self.frame_14)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.label_8 = QLabel(self.frame_14)
-        self.label_8.setObjectName(u"label_8")
+        self.labelrobparam = QLabel(self.frame_14)
+        self.labelrobparam.setObjectName(u"labelrobparam")
 
-        self.horizontalLayout_10.addWidget(self.label_8, 0, Qt.AlignHCenter)
+        self.horizontalLayout_10.addWidget(self.labelrobparam)
 
 
         self.horizontalLayout_9.addWidget(self.frame_14)
@@ -480,71 +480,143 @@ class Ui_Widget(object):
         self.verticalLayout_17.setSpacing(0)
         self.verticalLayout_17.setObjectName(u"verticalLayout_17")
         self.verticalLayout_17.setContentsMargins(0, 0, 0, 0)
-        self.checkBox = QCheckBox(self.frame_18)
-        self.checkBox.setObjectName(u"checkBox")
-        self.checkBox.setFont(font)
+        self.label_8 = QLabel(self.frame_18)
+        self.label_8.setObjectName(u"label_8")
+        self.label_8.setFont(font)
 
-        self.verticalLayout_17.addWidget(self.checkBox, 0, Qt.AlignHCenter)
+        self.verticalLayout_17.addWidget(self.label_8, 0, Qt.AlignHCenter)
+
+        self.horizontalSlider = QSlider(self.frame_18)
+        self.horizontalSlider.setObjectName(u"horizontalSlider")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.horizontalSlider.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider.setSizePolicy(sizePolicy2)
+        self.horizontalSlider.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider.setLayoutDirection(Qt.LeftToRight)
+        self.horizontalSlider.setAutoFillBackground(False)
+        self.horizontalSlider.setInputMethodHints(Qt.ImhNone)
+        self.horizontalSlider.setMaximum(510)
+        self.horizontalSlider.setValue(255)
+        self.horizontalSlider.setSliderPosition(255)
+        self.horizontalSlider.setTracking(True)
+        self.horizontalSlider.setOrientation(Qt.Horizontal)
+        self.horizontalSlider.setInvertedAppearance(False)
+        self.horizontalSlider.setInvertedControls(False)
+
+        self.verticalLayout_17.addWidget(self.horizontalSlider, 0, Qt.AlignHCenter)
+
+        self.label_9 = QLabel(self.frame_18)
+        self.label_9.setObjectName(u"label_9")
+        self.label_9.setFont(font)
+
+        self.verticalLayout_17.addWidget(self.label_9, 0, Qt.AlignHCenter)
+
+        self.horizontalSlider_2 = QSlider(self.frame_18)
+        self.horizontalSlider_2.setObjectName(u"horizontalSlider_2")
+        sizePolicy2.setHeightForWidth(self.horizontalSlider_2.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_2.setSizePolicy(sizePolicy2)
+        self.horizontalSlider_2.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_2.setMaximum(510)
+        self.horizontalSlider_2.setValue(255)
+        self.horizontalSlider_2.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_2.setInvertedAppearance(False)
+        self.horizontalSlider_2.setInvertedControls(False)
+
+        self.verticalLayout_17.addWidget(self.horizontalSlider_2, 0, Qt.AlignHCenter)
+
+        self.label_22 = QLabel(self.frame_18)
+        self.label_22.setObjectName(u"label_22")
+        self.label_22.setFont(font)
+
+        self.verticalLayout_17.addWidget(self.label_22, 0, Qt.AlignHCenter)
+
+        self.horizontalSlider_4 = QSlider(self.frame_18)
+        self.horizontalSlider_4.setObjectName(u"horizontalSlider_4")
+        sizePolicy2.setHeightForWidth(self.horizontalSlider_4.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_4.setSizePolicy(sizePolicy2)
+        self.horizontalSlider_4.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_4.setMaximum(510)
+        self.horizontalSlider_4.setValue(255)
+        self.horizontalSlider_4.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_4.setInvertedAppearance(False)
+        self.horizontalSlider_4.setInvertedControls(False)
+
+        self.verticalLayout_17.addWidget(self.horizontalSlider_4, 0, Qt.AlignHCenter)
+
+        self.label_23 = QLabel(self.frame_18)
+        self.label_23.setObjectName(u"label_23")
+        self.label_23.setFont(font)
+
+        self.verticalLayout_17.addWidget(self.label_23, 0, Qt.AlignHCenter)
+
+        self.horizontalSlider_5 = QSlider(self.frame_18)
+        self.horizontalSlider_5.setObjectName(u"horizontalSlider_5")
+        sizePolicy2.setHeightForWidth(self.horizontalSlider_5.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_5.setSizePolicy(sizePolicy2)
+        self.horizontalSlider_5.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_5.setMaximum(510)
+        self.horizontalSlider_5.setValue(255)
+        self.horizontalSlider_5.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_5.setInvertedAppearance(False)
+        self.horizontalSlider_5.setInvertedControls(False)
+
+        self.verticalLayout_17.addWidget(self.horizontalSlider_5, 0, Qt.AlignHCenter)
+
+        self.label_24 = QLabel(self.frame_18)
+        self.label_24.setObjectName(u"label_24")
+        self.label_24.setFont(font)
+
+        self.verticalLayout_17.addWidget(self.label_24, 0, Qt.AlignHCenter)
+
+        self.horizontalSlider_6 = QSlider(self.frame_18)
+        self.horizontalSlider_6.setObjectName(u"horizontalSlider_6")
+        sizePolicy2.setHeightForWidth(self.horizontalSlider_6.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_6.setSizePolicy(sizePolicy2)
+        self.horizontalSlider_6.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_6.setMaximum(510)
+        self.horizontalSlider_6.setValue(255)
+        self.horizontalSlider_6.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_6.setInvertedAppearance(False)
+        self.horizontalSlider_6.setInvertedControls(False)
+
+        self.verticalLayout_17.addWidget(self.horizontalSlider_6, 0, Qt.AlignHCenter)
+
+        self.label_25 = QLabel(self.frame_18)
+        self.label_25.setObjectName(u"label_25")
+        self.label_25.setFont(font)
+
+        self.verticalLayout_17.addWidget(self.label_25, 0, Qt.AlignHCenter)
+
+        self.horizontalSlider_3 = QSlider(self.frame_18)
+        self.horizontalSlider_3.setObjectName(u"horizontalSlider_3")
+        sizePolicy2.setHeightForWidth(self.horizontalSlider_3.sizePolicy().hasHeightForWidth())
+        self.horizontalSlider_3.setSizePolicy(sizePolicy2)
+        self.horizontalSlider_3.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_3.setMaximum(510)
+        self.horizontalSlider_3.setValue(255)
+        self.horizontalSlider_3.setOrientation(Qt.Horizontal)
+        self.horizontalSlider_3.setInvertedAppearance(False)
+        self.horizontalSlider_3.setInvertedControls(False)
+
+        self.verticalLayout_17.addWidget(self.horizontalSlider_3, 0, Qt.AlignHCenter)
 
 
         self.verticalLayout_16.addWidget(self.frame_18)
 
-        self.frame_19 = QFrame(self.frame_16)
-        self.frame_19.setObjectName(u"frame_19")
-        self.frame_19.setFrameShape(QFrame.StyledPanel)
-        self.frame_19.setFrameShadow(QFrame.Raised)
-        self.verticalLayout_18 = QVBoxLayout(self.frame_19)
-        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
-        self.frame_20 = QFrame(self.frame_19)
-        self.frame_20.setObjectName(u"frame_20")
-        self.frame_20.setFrameShape(QFrame.StyledPanel)
-        self.frame_20.setFrameShadow(QFrame.Raised)
-        self.horizontalLayout_11 = QHBoxLayout(self.frame_20)
-        self.horizontalLayout_11.setSpacing(0)
-        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
-        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
-        self.pushButton_18 = QPushButton(self.frame_20)
-        self.pushButton_18.setObjectName(u"pushButton_18")
-        self.pushButton_18.setEnabled(False)
-        self.pushButton_18.setMinimumSize(QSize(30, 30))
-        icon13 = QIcon()
-        icon13.addFile(u":/icons/arrow-left.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton_18.setIcon(icon13)
-        self.pushButton_18.setIconSize(QSize(30, 30))
+        self.pushButton = QPushButton(self.frame_16)
+        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton.setFont(font)
+        self.pushButton.setStyleSheet(u"QPushButton{\n"
+"background-color:rgb(0,174,239);\n"
+"border-radius:5px;\n"
+"}\n"
+"QPushButton:hover{\n"
+"background-color:rgb(0,26,39);\n"
+"}")
 
-        self.horizontalLayout_11.addWidget(self.pushButton_18)
-
-        self.lineEdit_2 = QLineEdit(self.frame_20)
-        self.lineEdit_2.setObjectName(u"lineEdit_2")
-        self.lineEdit_2.setEnabled(False)
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.lineEdit_2.sizePolicy().hasHeightForWidth())
-        self.lineEdit_2.setSizePolicy(sizePolicy2)
-        self.lineEdit_2.setFont(font2)
-        self.lineEdit_2.setStyleSheet(u"background-color:rgb(0,26,39);\n"
-"border-radius:5px;")
-        self.lineEdit_2.setAlignment(Qt.AlignCenter)
-
-        self.horizontalLayout_11.addWidget(self.lineEdit_2)
-
-        self.pushButton_19 = QPushButton(self.frame_20)
-        self.pushButton_19.setObjectName(u"pushButton_19")
-        self.pushButton_19.setEnabled(False)
-        self.pushButton_19.setMinimumSize(QSize(30, 30))
-        icon14 = QIcon()
-        icon14.addFile(u":/icons/arrow-right.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.pushButton_19.setIcon(icon14)
-        self.pushButton_19.setIconSize(QSize(30, 30))
-
-        self.horizontalLayout_11.addWidget(self.pushButton_19)
-
-
-        self.verticalLayout_18.addWidget(self.frame_20)
-
-
-        self.verticalLayout_16.addWidget(self.frame_19)
+        self.verticalLayout_16.addWidget(self.pushButton)
 
 
         self.verticalLayout_15.addWidget(self.frame_16)
@@ -621,10 +693,10 @@ class Ui_Widget(object):
         self.frame_21.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_14 = QHBoxLayout(self.frame_21)
         self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
-        self.label_9 = QLabel(self.frame_21)
-        self.label_9.setObjectName(u"label_9")
+        self.labelrob_2 = QLabel(self.frame_21)
+        self.labelrob_2.setObjectName(u"labelrob_2")
 
-        self.horizontalLayout_14.addWidget(self.label_9, 0, Qt.AlignHCenter)
+        self.horizontalLayout_14.addWidget(self.labelrob_2)
 
 
         self.horizontalLayout_13.addWidget(self.frame_21)
@@ -894,9 +966,9 @@ class Ui_Widget(object):
 "QPushButton:hover{\n"
 "background-color:rgb(0,26,39);\n"
 "}")
-        icon15 = QIcon()
-        icon15.addFile(u":/icons/globe.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.GITbtn.setIcon(icon15)
+        icon13 = QIcon()
+        icon13.addFile(u":/icons/globe.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.GITbtn.setIcon(icon13)
         self.GITbtn.setIconSize(QSize(30, 30))
 
         self.verticalLayout_3.addWidget(self.GITbtn, 0, Qt.AlignHCenter)
@@ -923,7 +995,7 @@ class Ui_Widget(object):
         self.retranslateUi(Widget)
 
         self.toolBox.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(Widget)
@@ -948,14 +1020,17 @@ class Ui_Widget(object):
         self.minimize_window_button.setText("")
         self.restore_window_button.setText("")
         self.close_window_button.setText("")
-        self.label_8.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
-        self.checkBox.setText(QCoreApplication.translate("Widget", u"Manual", None))
-        self.pushButton_18.setText("")
-        self.lineEdit_2.setPlaceholderText(QCoreApplication.translate("Widget", u"Valor", None))
-        self.pushButton_19.setText("")
+        self.labelrobparam.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
+        self.label_8.setText(QCoreApplication.translate("Widget", u"Pinza", None))
+        self.label_9.setText(QCoreApplication.translate("Widget", u"Articulacion 5", None))
+        self.label_22.setText(QCoreApplication.translate("Widget", u"Articulacion 4", None))
+        self.label_23.setText(QCoreApplication.translate("Widget", u"Articulacion 3", None))
+        self.label_24.setText(QCoreApplication.translate("Widget", u"Articulacion 2", None))
+        self.label_25.setText(QCoreApplication.translate("Widget", u"Articulacion 1", None))
+        self.pushButton.setText(QCoreApplication.translate("Widget", u"Enviar Datos", None))
         self.label_13.setText(QCoreApplication.translate("Widget", u"Webcam con vectores del brazo", None))
         self.label_14.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
-        self.label_9.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
+        self.labelrob_2.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
         self.label_10.setText(QCoreApplication.translate("Widget", u"Proximamente...", None))
         self.label_11.setText(QCoreApplication.translate("Widget", u"Se dise\u00f1ar\u00e1 e implementar\u00e1 mediante una IA ", None))
         self.label_12.setText(QCoreApplication.translate("Widget", u"la interactuar con un tablero de ajedrez", None))
