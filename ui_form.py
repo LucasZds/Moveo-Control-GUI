@@ -923,7 +923,7 @@ class Ui_Widget(object):
         self.retranslateUi(Widget)
 
         self.toolBox.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(6)
+        self.stackedWidget.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(Widget)

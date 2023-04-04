@@ -1,13 +1,20 @@
 import sys
 import os
+import cv2
 import serial
+from cvzone.PoseModule import PoseDetector
 from PySide6 import QtCore
 from PySide6 import QtGui
 from PySide6.QtWidgets import *
-from PySide6.QtCore import QPropertyAnimation
+from PySide6.QtCore import *
 from ui_form import * # Importar la interfaz gráfica creada en Qt Designer
 import webbrowser # Importar para abrir links
-import time
+
+try:
+    ser = serial.Serial('COM4', baudrate=9600) #Puerto por defecto
+except Exception as e:
+    print(e)
+    
 # Ventana principal
 class MainWindow(QWidget):
     def __init__(self):
@@ -61,16 +68,72 @@ class MainWindow(QWidget):
         # Configurar la lógica del botón para abrir o cerrar el menú lateral
         self.ui.open_close_side_bar_btn.clicked.connect(lambda: self.slideLeftMenu())
         
-        #--------------------------------Ventana 1--------------------------------
+        #--------------------------------Manuales--------------------------------
+        
+        #--------------------------------Joystick--------------------------------
+        
+        #--------------------------------Joystick--------------------------------
+        
+        #--------------------------------Parametros--------------------------------
         self.ui.pushButton_19.clicked.connect(self.sumavalor)
         self.ui.pushButton_18.clicked.connect(self.restavalor)
-        self.ui.checkBox.clicked.connect(self.updateButtons)   
+        self.ui.checkBox.clicked.connect(self.updateButtons)  
+        #--------------------------------Parametros--------------------------------
+
+        #--------------------------------Camara--------------------------------
+        # checkbox
+        self.capture = cv2.VideoCapture(2)
+        self.ui.timer = QTimer(self)
+        self.ui.timer.timeout.connect(self.update_image)
+        self.ui.timer.start(45)
+        #--------------------------------Camara--------------------------------
         
-        #--------------------------------Ventana 1--------------------------------
+        #--------------------------------Manuales--------------------------------
+        #--------------------------------Automaticos--------------------------------
+        #--------------------------------Ajedrez--------------------------------
+        
+        #--------------------------------Ajedrez--------------------------------
+        #--------------------------------Joystick--------------------------------
+        
+        #--------------------------------Joystick--------------------------------
+        #--------------------------------Parametros--------------------------------
+        
+        #--------------------------------Parametros--------------------------------
+        #--------------------------------Predeterminados--------------------------------
+        
+        #--------------------------------Predeterminados--------------------------------
+        #--------------------------------Automaticos--------------------------------
+        
         self.show()
-    # Función para la comunicacion del Arduino   
+        
+    def update_image(self):
+        # Crear una instancia de PoseDetector
+        detector = PoseDetector()
+        # Leer un cuadro del video
+        verificacion,frame = self.capture.read()
+        # Convertir la imagen de BGR a RGB
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        # Encontrar las poses y posiciones en el cuadro
+        frame = detector.findPose(frame)
+        # Crear un QImage a partir del cuadro
+        image = QImage(frame, frame.shape[1], frame.shape[0], QImage.Format_RGB888)
+        # Mostrar el QImage en el QLabel
+        self.ui.label_13.setPixmap(QPixmap.fromImage(image))
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+  
+        
+    # Función para la comunicacion del Arduino 
     def ComunicacionARD(self):
-        ser = serial.Serial(self.ui.lineEdit.text, baudrate=9600)  
+        ser = serial.Serial(str(self.ui.lineEdit.text), baudrate=9600)  
        
         
     # Función para abrir el enlace de GitHub en el navegador predeterminado    
@@ -85,37 +148,38 @@ class MainWindow(QWidget):
             x = "179"
         if int(x) < -179 :
             x = "-179"
-        return x
-        
-    '''Metodo envio de datos 
-    "0-0 0-0 0-0 0-0 0-0 0-0"
-       motor6_en-motor6_dir motor5_en-motor5_dir motor4_en-motor4_dir motor3_en-motor3_dir motor2_en-motor2_dir motor1_en-motor1_dir        
-       datos = b'000000000000'  # Datos a enviar (en formato bytes)
-       ser.write(datos) # Enviar                                            '''    
+        return x 
         
     def sumavalor(self):
         x = self.limites()
-        self.ui.lineEdit_2.setText(str(int(x)+1))
-        if int(x) < 180 :
-            ser = serial.Serial('COM4', baudrate=9600) 
-            datos = b'0000000000000010'  # Datos a enviar (en formato bytes)
-            ser.write(datos) # Enviar
-        datos = b'0000000000000000'  # Datos a enviar (en formato bytes)
-        ser.write(datos) # Enviar   
+        self.ui.lineEdit_2.setText(str(int(x)+1)) 
             
     def restavalor(self):
         x = self.limites()
         self.ui.lineEdit_2.setText(str(int(x)-1))
-        if int(x) > -180 :
-            ser = serial.Serial('COM4', baudrate=9600) 
-            datos = b'000000000000011'  # Datos a enviar (en formato bytes)
-            ser.write(datos) # Enviar
-        datos = b'0000000000000000'  # Datos a enviar (en formato bytes)
-        ser.write(datos) # Enviar
-
         
-    
+    '''  
+            pasos del motor ---> sentido del motor ---> estado del motor
+                motor 1 ---> motor 2 ---> ..... ---> pinza 
+    Metodo envio de datos "255,0,0,255,0,0,255,0,0,255,0,0,255,0,0,255,0,0,255,0,0"
+       datos = string concatenado  # Datos a enviar (en formato bytes)
+        ser.write(datos.encode()) # Enviar string codificado en bits                                            '''   
         
+    def enviar_datos(pasos_motor1, sentido_motor1, enable_motor1,
+                pasos_motor2, sentido_motor2, enable_motor2,
+                pasos_motor3, sentido_motor3, enable_motor3,
+                pasos_motor4, sentido_motor4, enable_motor4,
+                pasos_motor5, sentido_motor5, enable_motor5,
+                pasos_motor6, sentido_motor6, enable_motor6,
+                pasos_pinza, sentido_pinza, enable_pinza):
+        datos = f"{pasos_motor1},{sentido_motor1},{enable_motor1},\
+                {pasos_motor2},{sentido_motor2},{enable_motor2},\
+                {pasos_motor3},{sentido_motor3},{enable_motor3},\
+                {pasos_motor4},{sentido_motor4},{enable_motor4},\
+                {pasos_motor5},{sentido_motor5},{enable_motor5},\
+                {pasos_motor6},{sentido_motor6},{enable_motor6},\
+                {pasos_pinza},{sentido_pinza},{enable_pinza},\n"
+        ser.write(datos.encode()) # envía los datos al Arduino en formato de bytes
     
     # Función para animar y mostrar u ocultar el menú lateral
     def slideLeftMenu(self):
