@@ -225,14 +225,21 @@ class MainWindow(QWidget):
         valor_articulacion1 = (angulo-80)/255
         p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
           
-          
+    '''Detecta los puntos de referencia del cuerpo y calcula los ángulos del brazo y la rotación 
+    del cuerpo en tiempo real a partir de una webcam y muestra los resultados en un QPixmap.
+    Además, actualiza los valores de "self.angulo" y "self.angulocuerpo" si los ángulos detectados
+    están dentro de un rango específico.'''      
     def update_image(self):
+        # Index para optimizacion de recursos
         if self.index == 3:
+            # Leer el frame actual de la captura de video
             success, img = self.capture.read()
+            
+            # Procesar el frame actual y obtener los landmarks de la pose
             results = self.pose.process(img)
             landmarks = results.pose_landmarks.landmark
             
-            # Obtener los puntos de referencia de la muñeca, el codo y el hombro del brazo derecho
+            # Obtener los puntos de referencia de la muñeca, el codo y el hombro del brazo derecho y nariz
             wrist = landmarks[self.mpPose.PoseLandmark.RIGHT_WRIST]
             elbow = landmarks[self.mpPose.PoseLandmark.RIGHT_ELBOW]
             shoulder = landmarks[self.mpPose.PoseLandmark.RIGHT_SHOULDER]
@@ -242,14 +249,21 @@ class MainWindow(QWidget):
             angle = math.degrees(math.atan2(wrist.y - elbow.y, wrist.x - elbow.x) -
                                 math.atan2(shoulder.y - elbow.y, shoulder.x - elbow.x))
             angle = round(angle, 2)
-
+            
+             # Calcular el ángulo entre la línea que une el hombro y la nariz y la línea que une el codo y la nariz
             angle_body = math.degrees(math.atan2(nose.y - shoulder.y, nose.x - shoulder.x) -
                                   math.atan2(nose.y - elbow.y, nose.x - elbow.x))
             angle_body = round(angle_body, 2)
+        
+            # Mostrar los ángulos en la imagen
             cv2.putText(img, f"Angulo rotacion: {int(angle_body*-1)}", (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
+            cv2.putText(img, f"Angulo brazo: {int(angle*-1)}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)  
+            
+            # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle_body*-1) < 90 and int(angle_body*-1) > -50:
                 self.angulocuerpo=angle_body*10
-            cv2.putText(img, f"Angulo brazo: {int(angle*-1)}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)    
+            
+            # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle*-1) < 190 and int(angle*-1) > -50:
                 self.angulo = int(angle*-2)
 
@@ -263,8 +277,8 @@ class MainWindow(QWidget):
             cv2.line(img, (x1, y1), (x2, y2), (255, 0, 0), 2)
             cv2.line(img, (x2, y2), (x3, y3), (255, 0, 0), 2)
 
-            image = QImage(img, img.shape[1], img.shape[0], QImage.Format_RGB888)
             # Mostrar el QImage en el QLabel
+            image = QImage(img, img.shape[1], img.shape[0], QImage.Format_RGB888)
             self.ui.label_13.setPixmap(QPixmap.fromImage(image))
         
     def set_index_1(self):

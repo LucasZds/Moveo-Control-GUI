@@ -488,12 +488,12 @@ class Ui_Widget(object):
 
         self.horizontalSlider = QSlider(self.frame_18)
         self.horizontalSlider.setObjectName(u"horizontalSlider")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.horizontalSlider.sizePolicy().hasHeightForWidth())
         self.horizontalSlider.setSizePolicy(sizePolicy2)
-        self.horizontalSlider.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider.setMinimumSize(QSize(200, 0))
         self.horizontalSlider.setLayoutDirection(Qt.LeftToRight)
         self.horizontalSlider.setAutoFillBackground(False)
         self.horizontalSlider.setInputMethodHints(Qt.ImhNone)
@@ -517,7 +517,7 @@ class Ui_Widget(object):
         self.horizontalSlider_2.setObjectName(u"horizontalSlider_2")
         sizePolicy2.setHeightForWidth(self.horizontalSlider_2.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_2.setSizePolicy(sizePolicy2)
-        self.horizontalSlider_2.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_2.setMinimumSize(QSize(200, 0))
         self.horizontalSlider_2.setMaximum(510)
         self.horizontalSlider_2.setValue(255)
         self.horizontalSlider_2.setOrientation(Qt.Horizontal)
@@ -536,7 +536,7 @@ class Ui_Widget(object):
         self.horizontalSlider_4.setObjectName(u"horizontalSlider_4")
         sizePolicy2.setHeightForWidth(self.horizontalSlider_4.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_4.setSizePolicy(sizePolicy2)
-        self.horizontalSlider_4.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_4.setMinimumSize(QSize(200, 0))
         self.horizontalSlider_4.setMaximum(510)
         self.horizontalSlider_4.setValue(255)
         self.horizontalSlider_4.setOrientation(Qt.Horizontal)
@@ -555,7 +555,7 @@ class Ui_Widget(object):
         self.horizontalSlider_5.setObjectName(u"horizontalSlider_5")
         sizePolicy2.setHeightForWidth(self.horizontalSlider_5.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_5.setSizePolicy(sizePolicy2)
-        self.horizontalSlider_5.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_5.setMinimumSize(QSize(200, 0))
         self.horizontalSlider_5.setMaximum(510)
         self.horizontalSlider_5.setValue(255)
         self.horizontalSlider_5.setOrientation(Qt.Horizontal)
@@ -574,7 +574,7 @@ class Ui_Widget(object):
         self.horizontalSlider_6.setObjectName(u"horizontalSlider_6")
         sizePolicy2.setHeightForWidth(self.horizontalSlider_6.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_6.setSizePolicy(sizePolicy2)
-        self.horizontalSlider_6.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_6.setMinimumSize(QSize(200, 0))
         self.horizontalSlider_6.setMaximum(510)
         self.horizontalSlider_6.setValue(255)
         self.horizontalSlider_6.setOrientation(Qt.Horizontal)
@@ -593,7 +593,7 @@ class Ui_Widget(object):
         self.horizontalSlider_3.setObjectName(u"horizontalSlider_3")
         sizePolicy2.setHeightForWidth(self.horizontalSlider_3.sizePolicy().hasHeightForWidth())
         self.horizontalSlider_3.setSizePolicy(sizePolicy2)
-        self.horizontalSlider_3.setMinimumSize(QSize(300, 0))
+        self.horizontalSlider_3.setMinimumSize(QSize(200, 0))
         self.horizontalSlider_3.setMaximum(510)
         self.horizontalSlider_3.setValue(255)
         self.horizontalSlider_3.setOrientation(Qt.Horizontal)
@@ -617,6 +617,13 @@ class Ui_Widget(object):
 "}")
 
         self.verticalLayout_16.addWidget(self.pushButton)
+
+        self.frame_19 = QFrame(self.frame_16)
+        self.frame_19.setObjectName(u"frame_19")
+        self.frame_19.setFrameShape(QFrame.StyledPanel)
+        self.frame_19.setFrameShadow(QFrame.Raised)
+
+        self.verticalLayout_16.addWidget(self.frame_19)
 
 
         self.verticalLayout_15.addWidget(self.frame_16)
@@ -995,7 +1002,7 @@ class Ui_Widget(object):
         self.retranslateUi(Widget)
 
         self.toolBox.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(6)
 
 
         QMetaObject.connectSlotsByName(Widget)

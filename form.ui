@@ -971,7 +971,7 @@ background-color:rgb(166, 175, 179);
          <item>
           <widget class="QStackedWidget" name="stackedWidget">
            <property name="currentIndex">
-            <number>1</number>
+            <number>6</number>
            </property>
            <widget class="QWidget" name="manualpar">
             <layout class="QVBoxLayout" name="verticalLayout_14">
