@@ -24,8 +24,8 @@ class Ui_Widget(object):
     def setupUi(self, Widget):
         if not Widget.objectName():
             Widget.setObjectName(u"Widget")
-        Widget.resize(710, 421)
-        Widget.setMinimumSize(QSize(500, 300))
+        Widget.resize(850, 444)
+        Widget.setMinimumSize(QSize(700, 300))
         palette = QPalette()
         brush = QBrush(QColor(255, 255, 255, 255))
         brush.setStyle(Qt.SolidPattern)
@@ -141,7 +141,7 @@ class Ui_Widget(object):
 "}")
         self.page = QWidget()
         self.page.setObjectName(u"page")
-        self.page.setGeometry(QRect(0, 0, 160, 244))
+        self.page.setGeometry(QRect(0, 0, 160, 267))
         self.horizontalLayout_6 = QHBoxLayout(self.page)
         self.horizontalLayout_6.setSpacing(3)
         self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
@@ -192,7 +192,7 @@ class Ui_Widget(object):
         self.toolBox.addItem(self.page, icon3, u"Control Manual")
         self.page_2 = QWidget()
         self.page_2.setObjectName(u"page_2")
-        self.page_2.setGeometry(QRect(0, 0, 160, 244))
+        self.page_2.setGeometry(QRect(0, 0, 160, 267))
         self.verticalLayout_10 = QVBoxLayout(self.page_2)
         self.verticalLayout_10.setSpacing(3)
         self.verticalLayout_10.setObjectName(u"verticalLayout_10")
@@ -712,8 +712,49 @@ class Ui_Widget(object):
         self.frame_22.setObjectName(u"frame_22")
         self.frame_22.setFrameShape(QFrame.StyledPanel)
         self.frame_22.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_18 = QVBoxLayout(self.frame_22)
+        self.verticalLayout_18.setObjectName(u"verticalLayout_18")
+        self.label_26 = QLabel(self.frame_22)
+        self.label_26.setObjectName(u"label_26")
+        font4 = QFont()
+        font4.setPointSize(14)
+        font4.setBold(True)
+        self.label_26.setFont(font4)
 
-        self.horizontalLayout_13.addWidget(self.frame_22)
+        self.verticalLayout_18.addWidget(self.label_26)
+
+        self.label_27 = QLabel(self.frame_22)
+        self.label_27.setObjectName(u"label_27")
+        self.label_27.setFont(font4)
+
+        self.verticalLayout_18.addWidget(self.label_27)
+
+        self.label_28 = QLabel(self.frame_22)
+        self.label_28.setObjectName(u"label_28")
+        self.label_28.setFont(font4)
+
+        self.verticalLayout_18.addWidget(self.label_28)
+
+        self.label_29 = QLabel(self.frame_22)
+        self.label_29.setObjectName(u"label_29")
+        self.label_29.setFont(font4)
+
+        self.verticalLayout_18.addWidget(self.label_29)
+
+        self.label_30 = QLabel(self.frame_22)
+        self.label_30.setObjectName(u"label_30")
+        self.label_30.setFont(font4)
+
+        self.verticalLayout_18.addWidget(self.label_30)
+
+        self.label_31 = QLabel(self.frame_22)
+        self.label_31.setObjectName(u"label_31")
+        self.label_31.setFont(font4)
+
+        self.verticalLayout_18.addWidget(self.label_31)
+
+
+        self.horizontalLayout_13.addWidget(self.frame_22, 0, Qt.AlignHCenter)
 
 
         self.horizontalLayout_12.addWidget(self.frame_17)
@@ -881,10 +922,10 @@ class Ui_Widget(object):
 
         self.label_3 = QLabel(self.frame_12)
         self.label_3.setObjectName(u"label_3")
-        font4 = QFont()
-        font4.setPointSize(20)
-        font4.setBold(True)
-        self.label_3.setFont(font4)
+        font5 = QFont()
+        font5.setPointSize(20)
+        font5.setBold(True)
+        self.label_3.setFont(font5)
 
         self.verticalLayout_13.addWidget(self.label_3, 0, Qt.AlignHCenter|Qt.AlignBottom)
 
@@ -1002,7 +1043,7 @@ class Ui_Widget(object):
         self.retranslateUi(Widget)
 
         self.toolBox.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(6)
+        self.stackedWidget.setCurrentIndex(2)
 
 
         QMetaObject.connectSlotsByName(Widget)
@@ -1038,6 +1079,12 @@ class Ui_Widget(object):
         self.label_13.setText(QCoreApplication.translate("Widget", u"Webcam con vectores del brazo", None))
         self.label_14.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
         self.labelrob_2.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
+        self.label_26.setText(QCoreApplication.translate("Widget", u"TextLabel", None))
+        self.label_27.setText(QCoreApplication.translate("Widget", u"TextLabel", None))
+        self.label_28.setText(QCoreApplication.translate("Widget", u"TextLabel", None))
+        self.label_29.setText(QCoreApplication.translate("Widget", u"TextLabel", None))
+        self.label_30.setText(QCoreApplication.translate("Widget", u"TextLabel", None))
+        self.label_31.setText(QCoreApplication.translate("Widget", u"TextLabel", None))
         self.label_10.setText(QCoreApplication.translate("Widget", u"Proximamente...", None))
         self.label_11.setText(QCoreApplication.translate("Widget", u"Se dise\u00f1ar\u00e1 e implementar\u00e1 mediante una IA ", None))
         self.label_12.setText(QCoreApplication.translate("Widget", u"la interactuar con un tablero de ajedrez", None))

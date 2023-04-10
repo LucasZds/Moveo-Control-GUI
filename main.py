@@ -3,6 +3,7 @@ import os
 import serial
 import cv2
 import math
+import pygame
 import pybullet as p
 import mediapipe as mp
 import webbrowser # Importar para abrir links
@@ -24,6 +25,8 @@ class MainWindow(QWidget):
         self.ui = Ui_Widget()  # Crear una instancia de la interfaz gráfica
         self.ui.setupUi(self)  
         
+        # Pagina inicial, index = 0
+        self.ui.stackedWidget.setCurrentWidget(self.ui.mainPage)
         self.index = 0
         
         # Configuracion general de la ventana
@@ -55,13 +58,13 @@ class MainWindow(QWidget):
         self.ui.pushButton_13.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.autopred))
 
         # Index para optimizacion de ambiente
-        self.ui.pushButton_7.clicked.connect(self.set_index_1)
-        self.ui.pushButton_8.clicked.connect(self.set_index_2) #parametros manual
-        self.ui.pushButton_12.clicked.connect(self.set_index_3) #webcam
-        self.ui.pushButton_11.clicked.connect(self.set_index_4)
-        self.ui.pushButton_10.clicked.connect(self.set_index_5) 
-        self.ui.pushButton_9.clicked.connect(self.set_index_6)
-        self.ui.pushButton_13.clicked.connect(self.set_index_7)
+        self.ui.pushButton_7.clicked.connect(lambda:self.set_index(1))
+        self.ui.pushButton_8.clicked.connect(lambda:self.set_index(2)) #parametros manual
+        self.ui.pushButton_12.clicked.connect(lambda:self.set_index(3)) #webcam
+        self.ui.pushButton_11.clicked.connect(lambda:self.set_index(4))
+        self.ui.pushButton_10.clicked.connect(lambda:self.set_index(5)) 
+        self.ui.pushButton_9.clicked.connect(lambda:self.set_index(6))
+        self.ui.pushButton_13.clicked.connect(lambda:self.set_index(7))
     
         # Configurar la lógica del botón para abrir un enlace de GitHub
         self.ui.GITbtn.clicked.connect(self.Gitbtn)
@@ -92,16 +95,25 @@ class MainWindow(QWidget):
         #--------------------------------Manuales--------------------------------
         
         #--------------------------------Joystick--------------------------------
-        
+        pygame.init()
+        pygame.joystick.init()
+        self.control = pygame.joystick.Joystick(0)
+        self.control.init()
+        self.ejes = [0] * self.control.get_numaxes()
+        self.ui.timer2 = QTimer(self)
+        self.ui.timer2.start(60)
+        self.ui.timer2.timeout.connect(self.leer_entrada)
+        #pendiente comunicacion con arduino
         #--------------------------------Joystick--------------------------------
         
         #--------------------------------Parametros--------------------------------
-        self.ui.horizontalSlider_3.valueChanged.connect(self.actualizar_articulacion_1)
-        self.ui.horizontalSlider_6.valueChanged.connect(self.actualizar_articulacion_2)
-        self.ui.horizontalSlider_5.valueChanged.connect(self.actualizar_articulacion_3)
-        self.ui.horizontalSlider_4.valueChanged.connect(self.actualizar_articulacion_4)
-        self.ui.horizontalSlider_2.valueChanged.connect(self.actualizar_articulacion_5)
-        self.ui.horizontalSlider.valueChanged.connect(self.actualizar_articulacion_6)
+        self.ui.horizontalSlider_3.valueChanged.connect(lambda valor: self.actualizar_articulacion(1, valor))
+        self.ui.horizontalSlider_6.valueChanged.connect(lambda valor: self.actualizar_articulacion(2, valor))
+        self.ui.horizontalSlider_5.valueChanged.connect(lambda valor: self.actualizar_articulacion(3, valor))
+        self.ui.horizontalSlider_4.valueChanged.connect(lambda valor: self.actualizar_articulacion(4, valor))
+        self.ui.horizontalSlider_2.valueChanged.connect(lambda valor: self.actualizar_articulacion(5, valor))
+        self.ui.horizontalSlider.valueChanged.connect(lambda valor: self.actualizar_articulacion(6, valor))
+
         #inicialmente se necesia comunicacion con arduino
         #--------------------------------Parametros--------------------------------
 
@@ -111,7 +123,7 @@ class MainWindow(QWidget):
         self.mpPose = mp.solutions.pose
         self.pose = self.mpPose.Pose()
         self.angulo = 0
-        self.angulocuerpo=0
+        self.angulocuerpo = 0
         self.ui.timer = QTimer(self)
         self.ui.timer.start(60)
         self.ui.timer.timeout.connect(self.update_image)
@@ -121,6 +133,11 @@ class MainWindow(QWidget):
         #--------------------------------Camara--------------------------------
         
         #--------------------------------Manuales--------------------------------
+        
+        
+        
+        
+        
         #--------------------------------Automaticos--------------------------------
         #--------------------------------Ajedrez--------------------------------
         
@@ -142,6 +159,41 @@ class MainWindow(QWidget):
         #--------------------------------Automaticos--------------------------------
         self.show()
         
+    def leer_entrada(self):# Actualizacion de variables del joystick
+        num_ejes = 0
+        if self.index == 1: # Optimizacion de codigo por index
+            pygame.event.pump()
+            num_ejes = self.control.get_numaxes()
+
+            # Actualizar los valores de los ejes
+        for i in range(num_ejes):
+            axis_value = round(self.control.get_axis(i), 2)
+            if i == 4 or i == 5: # Verificar si el eje es 4 o 5
+                if axis_value >= 0: # Verificar si el valor del eje es mayor o igual a 0
+                    self.ejes[i] += axis_value
+            else:
+                self.ejes[i] += axis_value
+
+                    
+            # Crear una lista de tuplas con los Labels y textos correspondientes
+        labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
+                (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
+                (self.ui.label_30, "Gatillo izquierdo"), (self.ui.label_31, "Gatillo derecho")]
+
+        # Actualizar el texto para cada Label usando un bucle for
+        for i, (label, text) in enumerate(labels):
+            label.setText(f"{text} {self.ejes[i]}")
+
+            # Envio de datos para movimientos
+            
+            
+        ''' Botones y ejes a utilizar en formato de array [i]
+        joystick izuierda     joystick derecha     boton "A"      boron "B"
+        Eje 0=0  Eje 1=-0     Eje 2=0 Eje 3=-0     Eje 4 = -1     Eje 5 = -1
+        '''
+        
+        
+        
         '''base_link
         odom_joint
         Joint_1
@@ -156,41 +208,24 @@ class MainWindow(QWidget):
         Pivot_Arm_Gripper_Servo_Joint
         Pivot_Arm_Gripper_Idol_Joint'''
         
-    def actualizar_articulacion_1(self, valor_slider):
+    def actualizar_articulacion(self, num_articulacion, valor_slider):
         # Convierte el valor del slider al rango de valores aceptable para la articulación
         valor_articulacion = (valor_slider-255)/255
-        # Actualiza la posición de la articulación en PyBullet
-        p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=valor_articulacion)
         
-    def actualizar_articulacion_2(self, valor_slider):
-        # Convierte el valor del slider al rango de valores aceptable para la articulación
-        valor_articulacion = (valor_slider-255)/255
-        # Actualiza la posición de la articulación en PyBullet
-        p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
-        
-    def actualizar_articulacion_3(self, valor_slider):
-        # Convierte el valor del slider al rango de valores aceptable para la articulación
-        valor_articulacion = (valor_slider-255)/255
-        # Actualiza la posición de la articulación en PyBullet
-        p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion)
-        
-    def actualizar_articulacion_4(self, valor_slider):
-        # Convierte el valor del slider al rango de valores aceptable para la articulación
-        valor_articulacion = (valor_slider-255)/255
-        # Actualiza la posición de la articulación en PyBullet
-        p.setJointMotorControl2(p.objeto, 4, p.POSITION_CONTROL, targetPosition=valor_articulacion)
-        
-    def actualizar_articulacion_5(self, valor_slider):
-        # Convierte el valor del slider al rango de valores aceptable para la articulación
-        valor_articulacion = (valor_slider-255)/255
-        # Actualiza la posición de la articulación en PyBullet
-        p.setJointMotorControl2(p.objeto, 5, p.POSITION_CONTROL, targetPosition=valor_articulacion)
-        
-    def actualizar_articulacion_6(self, valor_slider):
-        # Convierte el valor del slider al rango de valores aceptable para la articulación
-        valor_articulacion = (valor_slider-255)/255
-        # Actualiza la posición de la articulación en PyBullet
-        p.setJointMotorControl2(p.objeto, 6, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+        # Actualiza la posición de la articulación en PyBullet según el número de articulación
+        if num_articulacion == 1:
+            p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+        elif num_articulacion == 2:
+            p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+        elif num_articulacion == 3:
+            p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+        elif num_articulacion == 4:
+            p.setJointMotorControl2(p.objeto, 4, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+        elif num_articulacion == 5:
+            p.setJointMotorControl2(p.objeto, 5, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+        elif num_articulacion == 6:
+            p.setJointMotorControl2(p.objeto, 6, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+
         
     def update_robot(self):
         # Configura la cámara
@@ -205,6 +240,9 @@ class MainWindow(QWidget):
         qimage = QImage(imagen, width, height, QImage.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)
         # Muestra el QPixmap en una etiqueta
+        if self.index==1:
+            self.ui.labelrob_2.setPixmap(pixmap)
+            
         if self.index==2 :
             self.ui.labelrobparam.setPixmap(pixmap)
         if self.index==3 :
@@ -281,26 +319,9 @@ class MainWindow(QWidget):
             image = QImage(img, img.shape[1], img.shape[0], QImage.Format_RGB888)
             self.ui.label_13.setPixmap(QPixmap.fromImage(image))
         
-    def set_index_1(self):
-        self.index = 1
+    def set_index(self,valor):
+        self.index = valor
         
-    def set_index_2(self):
-        self.index = 2
-
-    def set_index_3(self):
-        self.index = 3
-
-    def set_index_4(self):
-        self.index = 4
-
-    def set_index_5(self):
-        self.index = 5
-
-    def set_index_6(self):
-        self.index = 6
-        
-    def set_index_7(self):
-        self.index = 7
           
     # Función para la comunicacion del Arduino 
     def ComunicacionARD(self):

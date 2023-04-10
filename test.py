@@ -1,22 +1,40 @@
-import pybullet as p
-import cv2
+import pygame
+from PySide6.QtWidgets import *
+from PySide6.QtCore import *
 
-# Carga el archivo URDF y crea el objeto
-p.connect(p.GUI)
-objeto = p.loadURDF("ruta/al/archivo.urdf")
-# Configura la cámara
-p.resetDebugVisualizerCamera(cameraDistance=1.5, cameraYaw=45, cameraPitch=-30, cameraTargetPosition=[0,0,0])
+class Ventana(QMainWindow):
+    def __init__(self):
+        super().__init__()
 
-# Captura la imagen de la ventana de visualización
-width, height, rgba, depth, seg = p.getCameraImage(640, 480, renderer=p.ER_BULLET_HARDWARE_OPENGL)
+        self.etiqueta = QLabel("Presiona un botón del control", self)
+        self.setCentralWidget(self.etiqueta)
 
-# Convierte los datos RGBA en un objeto de imagen de OpenCV
-bgr = cv2.cvtColor(rgba, cv2.COLOR_RGBA2BGR)
-imagen = cv2.cvtColor(bgr, cv2.COLOR_BGR2RGB)
+        pygame.init()
+        pygame.joystick.init()
+        self.control = pygame.joystick.Joystick(0)
+        self.control.init()
 
-# Convierte la imagen en un QPixmap
-qimage = QImage(imagen, width, height, QImage.Format_RGB888)
-pixmap = QPixmap.fromImage(qimage)
+        # Inicializar la lista de botones y ejes
+        self.ejes = [0] * self.control.get_numaxes()
 
-# Muestra el QPixmap en una etiqueta
-self.ui.label.setPixmap(pixmap)
+    def leer_entrada(self):
+        pygame.event.pump()
+   
+        num_ejes = self.control.get_numaxes()
+
+
+        # Actualizar los valores de los ejes
+        for i in range(num_ejes):
+            self.ejes[i] = round(self.control.get_axis(i), 2)
+
+        texto_ejes = ", ".join([f"Eje {i}: {self.ejes[i]}" for i in range(num_ejes)])
+        self.etiqueta.setText(texto_ejes)
+
+if __name__ == '__main__':
+    app = QApplication([])
+    ventana = Ventana()
+    ventana.show()
+    timer = QTimer()
+    timer.timeout.connect(ventana.leer_entrada)
+    timer.start(100) # Actualizar la entrada cada 100 milisegundos
+    app.exec_()
