@@ -1,4 +1,5 @@
 import sys
+import time
 import os
 import serial
 import cv2
@@ -14,7 +15,7 @@ from PySide6.QtCore import *
 from ui_form import * # Importar la interfaz gráfica creada en Qt Designer}
 
 try:
-    ser = serial.Serial('COM4', baudrate=9600) #Puerto por defecto
+    ser = serial.Serial('COM8', baudrate=9600) #Puerto por defecto
 except Exception as e:
     print(e)
     
@@ -118,7 +119,7 @@ class MainWindow(QWidget):
         #--------------------------------Parametros--------------------------------
 
         #--------------------------------Camara--------------------------------
-        self.capture = cv2.VideoCapture(1)
+        self.capture = cv2.VideoCapture(0)
         self.mpDraw = mp.solutions.drawing_utils
         self.mpPose = mp.solutions.pose
         self.pose = self.mpPose.Pose()
@@ -160,32 +161,41 @@ class MainWindow(QWidget):
         self.show()
         
     def leer_entrada(self):# Actualizacion de variables del joystick
-        num_ejes = 0
-        if self.index == 1: # Optimizacion de codigo por index
-            pygame.event.pump()
-            num_ejes = self.control.get_numaxes()
+        if self.index == 1:
+            num_ejes = 0
+            if self.index == 1: # Optimizacion de codigo por index
+                pygame.event.pump()
+                num_ejes = self.control.get_numaxes()
 
-            # Actualizar los valores de los ejes
-        for i in range(num_ejes):
-            axis_value = round(self.control.get_axis(i), 2)
-            if i == 4 or i == 5: # Verificar si el eje es 4 o 5
-                if axis_value >= 0: # Verificar si el valor del eje es mayor o igual a 0
+                # Actualizar los valores de los ejes
+            for i in range(num_ejes):
+                axis_value = round(self.control.get_axis(i), 2)
+                self.ejes[i] += axis_value * 15  # Escalar los valores de los ejes
+                if i == 4 or i == 5:
+                    if axis_value  <= 0:
+                        self.ejes[i] = 0
+                else:
                     self.ejes[i] += axis_value
-            else:
-                self.ejes[i] += axis_value
 
-                    
-            # Crear una lista de tuplas con los Labels y textos correspondientes
-        labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
-                (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
-                (self.ui.label_30, "Gatillo izquierdo"), (self.ui.label_31, "Gatillo derecho")]
+                        
+                # Crear una lista de tuplas con los Labels y textos correspondientes
+            labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
+                    (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
+                    (self.ui.label_30, "Gatillo izquierdo"), (self.ui.label_31, "Gatillo derecho")]
 
-        # Actualizar el texto para cada Label usando un bucle for
-        for i, (label, text) in enumerate(labels):
-            label.setText(f"{text} {self.ejes[i]}")
+            # Actualizar el texto para cada Label usando un bucle for
+            for i, (label, text) in enumerate(labels):
+                label.setText(f"{text} {int(self.ejes[i])}")
+                self.actualizar_articulacion(i,255+int(self.ejes[i]))
 
-            # Envio de datos para movimientos
-            
+                # Envio de datos para movimientos
+            self.enviar_datos(int(self.ejes[0]), 0, 0,
+                int(self.ejes[1]), 0, 0,
+                int(self.ejes[2]), 0, 0,
+                int(self.ejes[3]), 0, 0,
+                int(self.ejes[4]), 0, 0,
+                int(self.ejes[5]), 0, 0,
+                int(self.ejes[3]), 0, 0)
             
         ''' Botones y ejes a utilizar en formato de array [i]
         joystick izuierda     joystick derecha     boton "A"      boron "B"
@@ -257,12 +267,27 @@ class MainWindow(QWidget):
         # Actualiza la posición de la articulación en PyBullet
         p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
         p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
+        self.enviar_datos(0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                int(angulo), 0, 0,
+                0, 0, 0,
+                0, 0, 0)
+        time.sleep(10)
         
     def actualizar_articulacion_3_cam(self, angulo):
         # Convierte el valor del slider al rango de valores aceptable para la articulación
         valor_articulacion1 = (angulo-80)/255
+        self.enviar_datos(0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                0, 0, 0,
+                int(angulo), 0, 0,
+                0, 0, 0,
+                0, 0, 0)
         p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
-          
+        time.sleep(10)  
     '''Detecta los puntos de referencia del cuerpo y calcula los ángulos del brazo y la rotación 
     del cuerpo en tiempo real a partir de una webcam y muestra los resultados en un QPixmap.
     Además, actualiza los valores de "self.angulo" y "self.angulocuerpo" si los ángulos detectados
@@ -339,7 +364,7 @@ class MainWindow(QWidget):
        datos = string concatenado  # Datos a enviar (en formato bytes)
         ser.write(datos.encode()) # Enviar string codificado en bits                                            '''   
         
-    def enviar_datos(pasos_motor1, sentido_motor1, enable_motor1,
+    def enviar_datos(self,pasos_motor1, sentido_motor1, enable_motor1,
                 pasos_motor2, sentido_motor2, enable_motor2,
                 pasos_motor3, sentido_motor3, enable_motor3,
                 pasos_motor4, sentido_motor4, enable_motor4,
