@@ -15,7 +15,7 @@ from PySide6.QtCore import *
 from ui_form import * # Importar la interfaz gráfica creada en Qt Designer}
 
 try:
-    ser = serial.Serial('COM8', baudrate=9600) #Puerto por defecto
+    ser = serial.Serial('COM4', baudrate=9600) #Puerto por defecto
 except Exception as e:
     print(e)
     
@@ -166,36 +166,46 @@ class MainWindow(QWidget):
             if self.index == 1: # Optimizacion de codigo por index
                 pygame.event.pump()
                 num_ejes = self.control.get_numaxes()
-
-                # Actualizar los valores de los ejes
-            for i in range(num_ejes):
-                axis_value = round(self.control.get_axis(i), 2)
-                self.ejes[i] += axis_value * 15  # Escalar los valores de los ejes
-                if i == 4 or i == 5:
-                    if axis_value  <= 0:
-                        self.ejes[i] = 0
-                else:
-                    self.ejes[i] += axis_value
-
-                        
-                # Crear una lista de tuplas con los Labels y textos correspondientes
-            labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
-                    (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
-                    (self.ui.label_30, "Gatillo izquierdo"), (self.ui.label_31, "Gatillo derecho")]
-
-            # Actualizar el texto para cada Label usando un bucle for
-            for i, (label, text) in enumerate(labels):
-                label.setText(f"{text} {int(self.ejes[i])}")
-                self.actualizar_articulacion(i,255+int(self.ejes[i]))
-
-                # Envio de datos para movimientos
-            self.enviar_datos(int(self.ejes[0]), 0, 0,
+                
+                for i in range(num_ejes):
+                    axis_value = round(self.control.get_axis(i), 2)
+                    self.ejes[i] = axis_value * 15  # Escalar los valores de los ejes
+                    if i == 4 or i == 5:
+                        if axis_value  <= 0:
+                            self.ejes[i] = 0
+                    else:
+                        self.ejes[i] = axis_value
+                self.enviar_datos(int(self.ejes[0]), 0, 0,
                 int(self.ejes[1]), 0, 0,
                 int(self.ejes[2]), 0, 0,
                 int(self.ejes[3]), 0, 0,
                 int(self.ejes[4]), 0, 0,
                 int(self.ejes[5]), 0, 0,
                 int(self.ejes[3]), 0, 0)
+
+                # Actualizar los valores de los ejes
+                for i in range(num_ejes):
+                    axis_value = round(self.control.get_axis(i), 2)
+                    self.ejes[i] += axis_value * 15  # Escalar los valores de los ejes
+                    if i == 4 or i == 5:
+                        if axis_value  <= 0:
+                            self.ejes[i] = 0
+                    else:
+                        self.ejes[i] += axis_value
+
+                            
+                    # Crear una lista de tuplas con los Labels y textos correspondientes
+                labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
+                        (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
+                        (self.ui.label_30, "Gatillo izquierdo"), (self.ui.label_31, "Gatillo derecho")]
+
+                # Actualizar el texto para cada Label usando un bucle for
+                for i, (label, text) in enumerate(labels):
+                    label.setText(f"{text} {int(self.ejes[i])}")
+                    self.actualizar_articulacion(i,255+int(self.ejes[i]))
+
+                    # Envio de datos para movimientos
+                
             
         ''' Botones y ejes a utilizar en formato de array [i]
         joystick izuierda     joystick derecha     boton "A"      boron "B"
@@ -371,6 +381,13 @@ class MainWindow(QWidget):
                 pasos_motor5, sentido_motor5, enable_motor5,
                 pasos_motor6, sentido_motor6, enable_motor6,
                 pasos_pinza, sentido_pinza, enable_pinza):
+        print(pasos_motor1, sentido_motor1, enable_motor1,
+                pasos_motor2, sentido_motor2, enable_motor2,
+                pasos_motor3, sentido_motor3, enable_motor3,
+                pasos_motor4, sentido_motor4, enable_motor4,
+                pasos_motor5, sentido_motor5, enable_motor5,
+                pasos_motor6, sentido_motor6, enable_motor6,
+                pasos_pinza, sentido_pinza, enable_pinza)
         datos = f"{pasos_motor1},{sentido_motor1},{enable_motor1},\
                 {pasos_motor2},{sentido_motor2},{enable_motor2},\
                 {pasos_motor3},{sentido_motor3},{enable_motor3},\
@@ -397,16 +414,6 @@ class MainWindow(QWidget):
         self.animation.setEndValue(newWidth)
         self.animation.setEasingCurve(QtCore.QEasingCurve.InOutQuart)
         self.animation.start()
-        
-    def updateButtons(self):
-        if self.ui.checkBox.isChecked():
-            self.ui.pushButton_18.setEnabled(True)
-            self.ui.pushButton_19.setEnabled(True)
-            self.ui.lineEdit_2.setEnabled(True)
-        else:
-            self.ui.pushButton_18.setEnabled(False)
-            self.ui.pushButton_19.setEnabled(False)
-            self.ui.lineEdit_2.setEnabled(False)
         
     # Función para guardar la posición global del mouse en la ventana al hacer clic
     def mousePressEvent(self, event):
