@@ -59,8 +59,8 @@ class MainWindow(QWidget):
         self.ui.pushButton_13.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.autopred))
 
         # Index para optimizacion de ambiente
-        self.ui.pushButton_7.clicked.connect(lambda:self.set_index(1))
-        self.ui.pushButton_8.clicked.connect(lambda:self.set_index(2)) #parametros manual
+        self.ui.pushButton_7.clicked.connect(lambda:self.set_index(1)) #joystick
+        self.ui.pushButton_8.clicked.connect(lambda:self.set_index(2)) #manual
         self.ui.pushButton_12.clicked.connect(lambda:self.set_index(3)) #webcam
         self.ui.pushButton_11.clicked.connect(lambda:self.set_index(4))
         self.ui.pushButton_10.clicked.connect(lambda:self.set_index(5)) 
@@ -159,7 +159,13 @@ class MainWindow(QWidget):
         #--------------------------------Predeterminados--------------------------------
         #--------------------------------Automaticos--------------------------------
         self.show()
+        '''
+        se deja un index como 1 para optimizar, luego se pasa a muestrear las posiciones de los 
+        botones del joystick mediante pygame para sacarlos a una lista. en caso de tener popsicion 4 o 5 
+        seteamos valores a 0 ya que esas posiciones por defalt estan en -1. luego se envian cada una de las posiciones
+        de la lista para arduino mediante comunicacion se actualiza para las labels y se deja un indice en pantalla
         
+        '''
     def leer_entrada(self):# Actualizacion de variables del joystick
         if self.index == 1:
             num_ejes = 0
@@ -231,7 +237,6 @@ class MainWindow(QWidget):
     def actualizar_articulacion(self, num_articulacion, valor_slider):
         # Convierte el valor del slider al rango de valores aceptable para la articulación
         valor_articulacion = (valor_slider-255)/255
-        
         # Actualiza la posición de la articulación en PyBullet según el número de articulación
         if num_articulacion == 1:
             p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=valor_articulacion)
@@ -262,42 +267,12 @@ class MainWindow(QWidget):
         # Muestra el QPixmap en una etiqueta
         if self.index==1:
             self.ui.labelrob_2.setPixmap(pixmap)
-            
         if self.index==2 :
             self.ui.labelrobparam.setPixmap(pixmap)
         if self.index==3 :
-            self.actualizar_articulacion_2_cam(self.angulo)
-            self.actualizar_articulacion_3_cam(self.angulocuerpo)
             self.ui.label_14.setPixmap(pixmap)
-            
-    def actualizar_articulacion_2_cam(self, angulo):
-        # Convierte el valor del slider al rango de valores aceptable para la articulación
-        valor_articulacion = (angulo-50)/255
-        valor_articulacion1 = (angulo-80)/255
-        # Actualiza la posición de la articulación en PyBullet
-        p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
-        p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
-        self.enviar_datos(0, 0, 0,
-                0, 0, 0,
-                0, 0, 0,
-                0, 0, 0,
-                int(angulo), 0, 0,
-                0, 0, 0,
-                0, 0, 0)
-        time.sleep(10)
         
-    def actualizar_articulacion_3_cam(self, angulo):
-        # Convierte el valor del slider al rango de valores aceptable para la articulación
-        valor_articulacion1 = (angulo-80)/255
-        self.enviar_datos(0, 0, 0,
-                0, 0, 0,
-                0, 0, 0,
-                0, 0, 0,
-                int(angulo), 0, 0,
-                0, 0, 0,
-                0, 0, 0)
-        p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
-        time.sleep(10)  
+    
     '''Detecta los puntos de referencia del cuerpo y calcula los ángulos del brazo y la rotación 
     del cuerpo en tiempo real a partir de una webcam y muestra los resultados en un QPixmap.
     Además, actualiza los valores de "self.angulo" y "self.angulocuerpo" si los ángulos detectados
@@ -335,10 +310,33 @@ class MainWindow(QWidget):
             # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle_body*-1) < 90 and int(angle_body*-1) > -50:
                 self.angulocuerpo=angle_body*10
+                self.enviar_datos(0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0,
+                        int(self.angulocuerpo)+175, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0)
+                p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=self.angulocuerpo)
+
+            
             
             # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle*-1) < 190 and int(angle*-1) > -50:
                 self.angulo = int(angle*-2)
+                
+                valor_articulacion = (self.angulo-50)/255
+                valor_articulacion1 = (self.angulo-80)/255
+                # Actualiza la posición de la articulación en PyBullet
+                p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+                p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
+                self.enviar_datos(0, 0, 0,
+                        0, 0, 0,
+                        int(self.angulo), 0, 0,
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0,
+                        0, 0, 0)
 
             # Mostrar los puntos de los brazos y la línea del brazo derecho
             x1, y1 = int(wrist.x * img.shape[1]), int(wrist.y * img.shape[0])
@@ -381,13 +379,6 @@ class MainWindow(QWidget):
                 pasos_motor5, sentido_motor5, enable_motor5,
                 pasos_motor6, sentido_motor6, enable_motor6,
                 pasos_pinza, sentido_pinza, enable_pinza):
-        print(pasos_motor1, sentido_motor1, enable_motor1,
-                pasos_motor2, sentido_motor2, enable_motor2,
-                pasos_motor3, sentido_motor3, enable_motor3,
-                pasos_motor4, sentido_motor4, enable_motor4,
-                pasos_motor5, sentido_motor5, enable_motor5,
-                pasos_motor6, sentido_motor6, enable_motor6,
-                pasos_pinza, sentido_pinza, enable_pinza)
         datos = f"{pasos_motor1},{sentido_motor1},{enable_motor1},\
                 {pasos_motor2},{sentido_motor2},{enable_motor2},\
                 {pasos_motor3},{sentido_motor3},{enable_motor3},\
