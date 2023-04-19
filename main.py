@@ -12,12 +12,7 @@ from PySide6 import QtCore
 from PySide6 import QtGui
 from PySide6.QtWidgets import *
 from PySide6.QtCore import *
-from ui_form import * # Importar la interfaz gráfica creada en Qt Designer}
-
-try:
-    ser = serial.Serial('COM4', baudrate=9600) #Puerto por defecto
-except Exception as e:
-    print(e)
+from ui_form import * # Importar la interfaz gráfica creada en Qt Designer
     
 # Ventana principal
 class MainWindow(QWidget):
@@ -25,7 +20,7 @@ class MainWindow(QWidget):
         QWidget.__init__(self)
         self.ui = Ui_Widget()  # Crear una instancia de la interfaz gráfica
         self.ui.setupUi(self)  
-        
+
         # Pagina inicial, index = 0
         self.ui.stackedWidget.setCurrentWidget(self.ui.mainPage)
         self.index = 0
@@ -181,13 +176,6 @@ class MainWindow(QWidget):
                             self.ejes[i] = 0
                     else:
                         self.ejes[i] = axis_value
-                self.enviar_datos(int(self.ejes[0]), 0, 0,
-                int(self.ejes[1]), 0, 0,
-                int(self.ejes[2]), 0, 0,
-                int(self.ejes[3]), 0, 0,
-                int(self.ejes[4]), 0, 0,
-                int(self.ejes[5]), 0, 0,
-                int(self.ejes[3]), 0, 0)
 
                 # Actualizar los valores de los ejes
                 for i in range(num_ejes):
@@ -198,8 +186,14 @@ class MainWindow(QWidget):
                             self.ejes[i] = 0
                     else:
                         self.ejes[i] += axis_value
+                self.enviar_datos(int(self.ejes[0]),
+                int(self.ejes[1]),
+                int(self.ejes[2]),
+                int(self.ejes[3]),
+                int(self.ejes[4]),
+                int(self.ejes[5]),
+                int(self.ejes[3]))
 
-                            
                     # Crear una lista de tuplas con los Labels y textos correspondientes
                 labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
                         (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
@@ -310,13 +304,13 @@ class MainWindow(QWidget):
             # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle_body*-1) < 90 and int(angle_body*-1) > -50:
                 self.angulocuerpo=angle_body*10
-                self.enviar_datos(0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0,
-                        int(self.angulocuerpo)+175, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0)
+                self.enviar_datos(0,
+                        0,
+                        0,
+                        0,
+                        int(self.angulocuerpo)+175,
+                        0,
+                        0,)
                 p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=self.angulocuerpo)
 
             
@@ -330,13 +324,13 @@ class MainWindow(QWidget):
                 # Actualiza la posición de la articulación en PyBullet
                 p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
                 p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
-                self.enviar_datos(0, 0, 0,
-                        0, 0, 0,
-                        int(self.angulo), 0, 0,
-                        0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0,
-                        0, 0, 0)
+                self.enviar_datos(0,
+                        0,
+                        int(self.angulo),
+                        0,
+                        0,
+                        0,
+                        0)
 
             # Mostrar los puntos de los brazos y la línea del brazo derecho
             x1, y1 = int(wrist.x * img.shape[1]), int(wrist.y * img.shape[0])
@@ -358,7 +352,12 @@ class MainWindow(QWidget):
           
     # Función para la comunicacion del Arduino 
     def ComunicacionARD(self):
-        ser = serial.Serial(str(self.ui.lineEdit.text), baudrate=9600)  
+        try:
+            ser = serial.Serial(self.ui.lineEdit.text, baudrate=9600) #Puerto por defecto
+            print(self.ui.lineEdit.text)
+        except Exception as e:
+            print(e) 
+            print(self.ui.lineEdit.text)
        
         
     # Función para abrir el enlace de GitHub en el navegador predeterminado    
@@ -372,21 +371,22 @@ class MainWindow(QWidget):
        datos = string concatenado  # Datos a enviar (en formato bytes)
         ser.write(datos.encode()) # Enviar string codificado en bits                                            '''   
         
-    def enviar_datos(self,pasos_motor1, sentido_motor1, enable_motor1,
-                pasos_motor2, sentido_motor2, enable_motor2,
-                pasos_motor3, sentido_motor3, enable_motor3,
-                pasos_motor4, sentido_motor4, enable_motor4,
-                pasos_motor5, sentido_motor5, enable_motor5,
-                pasos_motor6, sentido_motor6, enable_motor6,
-                pasos_pinza, sentido_pinza, enable_pinza):
-        datos = f"{pasos_motor1},{sentido_motor1},{enable_motor1},\
-                {pasos_motor2},{sentido_motor2},{enable_motor2},\
-                {pasos_motor3},{sentido_motor3},{enable_motor3},\
-                {pasos_motor4},{sentido_motor4},{enable_motor4},\
-                {pasos_motor5},{sentido_motor5},{enable_motor5},\
-                {pasos_motor6},{sentido_motor6},{enable_motor6},\
-                {pasos_pinza},{sentido_pinza},{enable_pinza},\n"
-        ser.write(datos.encode()) # envía los datos al Arduino en formato de bytes
+    def enviar_datos(self,pasos_motor1,
+                pasos_motor2,
+                pasos_motor3,
+                pasos_motor4,
+                pasos_motor5,
+                pasos_motor6,
+                pasos_pinza):
+        datos = f"{pasos_motor1*100},\
+                {pasos_motor2*100},\
+                {pasos_motor3*100},\
+                {pasos_motor4*100},\
+                {pasos_motor5*100},\
+                {pasos_motor6*100},\
+                {pasos_pinza*100},\n"
+        self.ser.write(datos.encode()) # envía los datos al Arduino en formato de bytes
+        print(datos)
     
     # Función para animar y mostrar u ocultar el menú lateral
     def slideLeftMenu(self):

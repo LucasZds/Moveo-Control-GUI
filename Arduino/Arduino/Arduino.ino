@@ -109,13 +109,13 @@ void loop() {
 
       // dividir los datos en substrings separados por comas
       char *ptr = strtok(datos, ",");
-      pasos_motor1 = atoi(ptr); ptr = strtok(NULL, ","); sentido_motor1 = atoi(ptr); ptr = strtok(NULL, ","); enable_motor1 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor2 = atoi(ptr); ptr = strtok(NULL, ","); sentido_motor2 = atoi(ptr); ptr = strtok(NULL, ","); enable_motor2 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor3 = atoi(ptr); ptr = strtok(NULL, ","); sentido_motor3 = atoi(ptr); ptr = strtok(NULL, ","); enable_motor3 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor4 = atoi(ptr); ptr = strtok(NULL, ","); sentido_motor4 = atoi(ptr); ptr = strtok(NULL, ","); enable_motor4 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor5 = atoi(ptr); ptr = strtok(NULL, ","); sentido_motor5 = atoi(ptr); ptr = strtok(NULL, ","); enable_motor5 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor6 = atoi(ptr); ptr = strtok(NULL, ","); sentido_motor6 = atoi(ptr); ptr = strtok(NULL, ","); enable_motor6 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_pinza = atoi(ptr); ptr = strtok(NULL, ","); sentido_pinza = atoi(ptr); ptr = strtok(NULL, ","); enable_pinza = atoi(ptr);
+      pasos_motor1 = atoi(ptr); ptr = strtok(NULL, ",");
+      pasos_motor2 = atoi(ptr); ptr = strtok(NULL, ",");
+      pasos_motor3 = atoi(ptr); ptr = strtok(NULL, ",");
+      pasos_motor4 = atoi(ptr); ptr = strtok(NULL, ",");
+      pasos_motor5 = atoi(ptr); ptr = strtok(NULL, ",");
+      pasos_motor6 = atoi(ptr); ptr = strtok(NULL, ",");
+      pasos_pinza = atoi(ptr);
 
       motor1.moveTo(pasos_motor1);
       motor2.moveTo(pasos_motor2);
