@@ -806,7 +806,7 @@ background-color:rgb(0,174,239);
            </property>
            <layout class="QHBoxLayout" name="horizontalLayout_7">
             <item alignment="Qt::AlignLeft|Qt::AlignVCenter">
-             <widget class="QLineEdit" name="lineEdit">
+             <widget class="QLineEdit" name="Puertocom">
               <property name="sizePolicy">
                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
                 <horstretch>0</horstretch>
@@ -971,7 +971,7 @@ background-color:rgb(166, 175, 179);
          <item>
           <widget class="QStackedWidget" name="stackedWidget">
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="manualpar">
             <layout class="QVBoxLayout" name="verticalLayout_14">
@@ -1382,7 +1382,7 @@ background-color:rgb(0,26,39);
                        </widget>
                       </item>
                       <item>
-                       <widget class="QPushButton" name="pushButton">
+                       <widget class="QPushButton" name="pushButtonpara">
                         <property name="font">
                          <font>
                           <pointsize>12</pointsize>

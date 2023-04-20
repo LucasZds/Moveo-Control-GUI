@@ -39,10 +39,9 @@ class MainWindow(QWidget):
         # Configurar la lógica de los botones de la ventana
         QSizeGrip(self.ui.size_grip)
         self.ui.minimize_window_button.clicked.connect(lambda: self.showMinimized())
-        self.ui.close_window_button.clicked.connect(lambda: self.close())
-        self.ui.exit_button.clicked.connect(lambda: self.close())
+        self.ui.close_window_button.clicked.connect(lambda: self.closeapp())
+        self.ui.exit_button.clicked.connect(lambda: self.closeapp())
         self.ui.restore_window_button.clicked.connect(lambda: self.restore_or_maximize_window())
-        
         
         # Configurar la lógica de los botones para cambiar entre los modos manual y automático
         self.ui.pushButton_7.clicked.connect(lambda: self.ui.stackedWidget.setCurrentWidget(self.ui.manualjoy))
@@ -66,6 +65,11 @@ class MainWindow(QWidget):
         self.ui.GITbtn.clicked.connect(self.Gitbtn)
 
         # Establecemos Comunicacion SERIAL
+        try:
+            self.ser = serial.Serial(self.ui.Puertocom.text(), baudrate=9600) #Puerto por defecto
+        except Exception as e:
+            print(e)
+        
         self.ui.pushButton_14.clicked.connect(self.ComunicacionARD)
         
         # Configurar la lógica de los eventos de movimiento del ratón para la ventana
@@ -91,14 +95,17 @@ class MainWindow(QWidget):
         #--------------------------------Manuales--------------------------------
         
         #--------------------------------Joystick--------------------------------
-        pygame.init()
-        pygame.joystick.init()
-        self.control = pygame.joystick.Joystick(0)
-        self.control.init()
-        self.ejes = [0] * self.control.get_numaxes()
-        self.ui.timer2 = QTimer(self)
-        self.ui.timer2.start(60)
-        self.ui.timer2.timeout.connect(self.leer_entrada)
+        try:
+            pygame.init()
+            pygame.joystick.init()
+            self.control = pygame.joystick.Joystick(0)
+            self.control.init()
+            self.ejes = [0] * self.control.get_numaxes()
+            self.ui.timer2 = QTimer(self)
+            self.ui.timer2.start(60)
+            self.ui.timer2.timeout.connect(self.leer_entrada)
+        except Exception as e:
+            print(e) 
         #pendiente comunicacion con arduino
         #--------------------------------Joystick--------------------------------
         
@@ -109,6 +116,7 @@ class MainWindow(QWidget):
         self.ui.horizontalSlider_4.valueChanged.connect(lambda valor: self.actualizar_articulacion(4, valor))
         self.ui.horizontalSlider_2.valueChanged.connect(lambda valor: self.actualizar_articulacion(5, valor))
         self.ui.horizontalSlider.valueChanged.connect(lambda valor: self.actualizar_articulacion(6, valor))
+        self.ui.pushButtonpara.clicked.connect()
 
         #inicialmente se necesia comunicacion con arduino
         #--------------------------------Parametros--------------------------------
@@ -124,7 +132,7 @@ class MainWindow(QWidget):
         self.ui.timer.start(60)
         self.ui.timer.timeout.connect(self.update_image)
         
-        #queda comunicacion a ardduino
+        #queda comunicacion a arduino
         
         #--------------------------------Camara--------------------------------
         
@@ -227,6 +235,9 @@ class MainWindow(QWidget):
         Tip_Gripper_Idol_Joint
         Pivot_Arm_Gripper_Servo_Joint
         Pivot_Arm_Gripper_Idol_Joint'''
+    def closeapp(self):
+        self.ser.close()
+        self.close()
         
     def actualizar_articulacion(self, num_articulacion, valor_slider):
         # Convierte el valor del slider al rango de valores aceptable para la articulación
@@ -353,11 +364,11 @@ class MainWindow(QWidget):
     # Función para la comunicacion del Arduino 
     def ComunicacionARD(self):
         try:
-            ser = serial.Serial(self.ui.lineEdit.text, baudrate=9600) #Puerto por defecto
-            print(self.ui.lineEdit.text)
+            puerto = self.ui.Puertocom.text()
+            self.ser = serial.Serial(puerto, baudrate=9600) #Puerto por defecto            
+
         except Exception as e:
             print(e) 
-            print(self.ui.lineEdit.text)
        
         
     # Función para abrir el enlace de GitHub en el navegador predeterminado    
@@ -365,9 +376,9 @@ class MainWindow(QWidget):
         webbrowser.open("https://github.com/LucasZds/Moveo-Control-GUI")
         
     '''  
-            pasos del motor ---> sentido del motor ---> estado del motor
+                        pasos del motor
                 motor 1 ---> motor 2 ---> ..... ---> pinza 
-    Metodo envio de datos "255,0,0,255,0,0,255,0,0,255,0,0,255,0,0,255,0,0,255,0,0"
+    Metodo envio de datos "255,255,255,255,255,255,255"
        datos = string concatenado  # Datos a enviar (en formato bytes)
         ser.write(datos.encode()) # Enviar string codificado en bits                                            '''   
         
@@ -385,7 +396,7 @@ class MainWindow(QWidget):
                 {pasos_motor5*100},\
                 {pasos_motor6*100},\
                 {pasos_pinza*100},\n"
-        self.ser.write(datos.encode()) # envía los datos al Arduino en formato de bytes
+        self.ser.write(datos.encode("UTF-8")) # envía los datos al Arduino en formato de bytes
         print(datos)
     
     # Función para animar y mostrar u ocultar el menú lateral

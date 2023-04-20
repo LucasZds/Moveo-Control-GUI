@@ -327,19 +327,19 @@ class Ui_Widget(object):
         self.frame_4.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_7 = QHBoxLayout(self.frame_4)
         self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
-        self.lineEdit = QLineEdit(self.frame_4)
-        self.lineEdit.setObjectName(u"lineEdit")
+        self.Puertocom = QLineEdit(self.frame_4)
+        self.Puertocom.setObjectName(u"Puertocom")
         sizePolicy1 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Preferred)
         sizePolicy1.setHorizontalStretch(0)
         sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.lineEdit.sizePolicy().hasHeightForWidth())
-        self.lineEdit.setSizePolicy(sizePolicy1)
-        self.lineEdit.setFont(font2)
-        self.lineEdit.setTabletTracking(False)
-        self.lineEdit.setStyleSheet(u"border-bottom:3px solid rgb(230,5,64);")
-        self.lineEdit.setDragEnabled(False)
+        sizePolicy1.setHeightForWidth(self.Puertocom.sizePolicy().hasHeightForWidth())
+        self.Puertocom.setSizePolicy(sizePolicy1)
+        self.Puertocom.setFont(font2)
+        self.Puertocom.setTabletTracking(False)
+        self.Puertocom.setStyleSheet(u"border-bottom:3px solid rgb(230,5,64);")
+        self.Puertocom.setDragEnabled(False)
 
-        self.horizontalLayout_7.addWidget(self.lineEdit, 0, Qt.AlignLeft|Qt.AlignVCenter)
+        self.horizontalLayout_7.addWidget(self.Puertocom, 0, Qt.AlignLeft|Qt.AlignVCenter)
 
         self.pushButton_14 = QPushButton(self.frame_4)
         self.pushButton_14.setObjectName(u"pushButton_14")
@@ -605,10 +605,10 @@ class Ui_Widget(object):
 
         self.verticalLayout_16.addWidget(self.frame_18)
 
-        self.pushButton = QPushButton(self.frame_16)
-        self.pushButton.setObjectName(u"pushButton")
-        self.pushButton.setFont(font)
-        self.pushButton.setStyleSheet(u"QPushButton{\n"
+        self.pushButtonpara = QPushButton(self.frame_16)
+        self.pushButtonpara.setObjectName(u"pushButtonpara")
+        self.pushButtonpara.setFont(font)
+        self.pushButtonpara.setStyleSheet(u"QPushButton{\n"
 "background-color:rgb(0,174,239);\n"
 "border-radius:5px;\n"
 "}\n"
@@ -616,7 +616,7 @@ class Ui_Widget(object):
 "background-color:rgb(0,26,39);\n"
 "}")
 
-        self.verticalLayout_16.addWidget(self.pushButton)
+        self.verticalLayout_16.addWidget(self.pushButtonpara)
 
         self.frame_19 = QFrame(self.frame_16)
         self.frame_19.setObjectName(u"frame_19")
@@ -1043,7 +1043,7 @@ class Ui_Widget(object):
         self.retranslateUi(Widget)
 
         self.toolBox.setCurrentIndex(0)
-        self.stackedWidget.setCurrentIndex(2)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(Widget)
@@ -1063,7 +1063,7 @@ class Ui_Widget(object):
         self.toolBox.setItemText(self.toolBox.indexOf(self.page_2), QCoreApplication.translate("Widget", u"Control Automatico", None))
         self.exit_button.setText(QCoreApplication.translate("Widget", u"EXIT", None))
         self.open_close_side_bar_btn.setText("")
-        self.lineEdit.setPlaceholderText(QCoreApplication.translate("Widget", u"Puerto COM", None))
+        self.Puertocom.setPlaceholderText(QCoreApplication.translate("Widget", u"Puerto COM", None))
         self.pushButton_14.setText("")
         self.minimize_window_button.setText("")
         self.restore_window_button.setText("")
@@ -1075,7 +1075,7 @@ class Ui_Widget(object):
         self.label_23.setText(QCoreApplication.translate("Widget", u"Articulacion 3", None))
         self.label_24.setText(QCoreApplication.translate("Widget", u"Articulacion 2", None))
         self.label_25.setText(QCoreApplication.translate("Widget", u"Articulacion 1", None))
-        self.pushButton.setText(QCoreApplication.translate("Widget", u"Enviar Datos", None))
+        self.pushButtonpara.setText(QCoreApplication.translate("Widget", u"Enviar Datos", None))
         self.label_13.setText(QCoreApplication.translate("Widget", u"Webcam con vectores del brazo", None))
         self.label_14.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
         self.labelrob_2.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))

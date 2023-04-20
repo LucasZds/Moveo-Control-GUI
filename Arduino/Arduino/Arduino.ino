@@ -18,7 +18,7 @@ const int motor3_step_pin = 4;
 
 const int motor4_en_pin = A6;
 const int motor4_dir_pin = A7;
-const int motor4_step_pin = A8;
+const int motor4_step_pin = 1;
 
 const int motor5_en_pin = 8;
 const int motor5_dir_pin = 9;
@@ -28,15 +28,11 @@ const int motor6_en_pin = 5;
 const int motor6_dir_pin = 6;
 const int motor6_step_pin = 7;
 
+int pos_pinza = 0;
+
 // Variables para guardar string
-char datos[50]; // buffer para almacenar los datos recibidos
-int pasos_motor1, sentido_motor1, enable_motor1;
-int pasos_motor2, sentido_motor2, enable_motor2;
-int pasos_motor3, sentido_motor3, enable_motor3;
-int pasos_motor4, sentido_motor4, enable_motor4;
-int pasos_motor5, sentido_motor5, enable_motor5;
-int pasos_motor6, sentido_motor6, enable_motor6;
-int pasos_pinza, sentido_pinza, enable_pinza, pos_pinza;
+String bufferdatos = "";
+int valores[7];
 
 // Crear objetos AccelStepper para cada motor
 AccelStepper motor1(AccelStepper::DRIVER, motor1_step_pin, motor1_dir_pin);
@@ -95,49 +91,54 @@ void setup() {
 
   // Iniciar la comunicación serial
   Serial.begin(9600);
+  
+  pinMode(LED_BUILTIN, OUTPUT);
 }
 
 void loop() {
-  if (Serial.available() > 0) {
-      // leer los datos recibidos en el buffer
-      int i = 0;
-      while (Serial.available() > 0) {
-        datos[i] = Serial.read();
-        i++;
-      }
-      datos[i] = '\0'; // agregar el terminador de string
+  if (Serial.available()) {
+    /* Hay uno o más caracteres a leer en la serial.*/
+    int car = Serial.read();
+    /* Agregamos cada caracter al string*/
+    if (car == '\n') {
+     /* "/n" tenemos un paquete completo
+     se limpia el string de las "," y sictuado de cada valor*/
 
-      // dividir los datos en substrings separados por comas
-      char *ptr = strtok(datos, ",");
-      pasos_motor1 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor2 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor3 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor4 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor5 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_motor6 = atoi(ptr); ptr = strtok(NULL, ",");
-      pasos_pinza = atoi(ptr);
 
-      motor1.moveTo(pasos_motor1);
-      motor2.moveTo(pasos_motor2);
-      motor3.moveTo(pasos_motor3);
-      motor4.moveTo(pasos_motor4);
-      motor5.moveTo(pasos_motor5);
-      motor6.moveTo(pasos_motor6);
+        int index = 0;
+        while (bufferdatos.indexOf(',') >= 0) {
+          String subcadena = bufferdatos.substring(0, bufferdatos.indexOf(','));
+          valores[index] = subcadena.toInt();
+          bufferdatos = bufferdatos.substring(bufferdatos.indexOf(',') + 1);
+          index++;
+        }
+        
+        // El último valor está después de la última coma
+        String subcadena = bufferdatos.substring(0, bufferdatos.indexOf('\n'));
+        valores[index] = subcadena.toInt();
+      
+      motor1.moveTo(valores[0]);
+      motor2.moveTo(valores[1]);
+      motor3.moveTo(valores[2]);
+      motor4.moveTo(valores[3]);
+      motor5.moveTo(valores[4]);
+      motor6.moveTo(valores[5]);
 
-      if (enable_pinza==1){
-          if(sentido_pinza==1){
-              for (pos_pinza; pos_pinza <= pasos_pinza; pos_pinza ++){
+      if (valores[0] > 300)digitalWrite(LED_BUILTIN,HIGH);
+      if (valores[1] > 250)digitalWrite(LED_BUILTIN,LOW);
+          if(valores[6]>1){
+              for (pos_pinza; pos_pinza <= valores[6]; pos_pinza ++){
                 pinza1.write(pos_pinza);                                     
                 delay(10);
               }
           }
-          if(sentido_pinza==0){
-              for (pasos_pinza; pasos_pinza >= pos_pinza; pos_pinza --){
+          if(valores[6]<0){
+              for (valores[6]; valores[6] >= pos_pinza; pos_pinza --){
                 pinza1.write(pos_pinza);
                 delay(10);                                      
               }   
           }
-      }
+      
     while(motor1.distanceToGo() != 0 || motor2.distanceToGo() != 0 || motor3.distanceToGo() != 0 || motor4.distanceToGo() != 0 || motor5.distanceToGo() != 0 ||motor6.distanceToGo() != 0){
           motor1.run(); 
           motor2.run();
@@ -146,5 +147,11 @@ void loop() {
           motor5.run();
           motor6.run();          
         }
+      bufferdatos = "";  // Limpiar el buffer una vez procesado.
+      
+    } else {
+      /*Acumular los caracteres leídos.*/
+      bufferdatos += (char) car;
+    }
   }
 }
