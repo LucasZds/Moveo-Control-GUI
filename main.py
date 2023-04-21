@@ -345,9 +345,9 @@ class MainWindow(QWidget):
                 self.enviar_datos(0,
                         int(self.angulo),
                         int(self.angulo),
-                        (int(self.angulo)-50),
                         0,
-                        (int(self.angulo)-40),
+                        0,
+                        0,
                         0)
 
             # Mostrar los puntos de los brazos y la línea del brazo derecho
