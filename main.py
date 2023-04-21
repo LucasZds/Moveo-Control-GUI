@@ -92,7 +92,7 @@ class MainWindow(QWidget):
         self.ui.timer1 = QTimer(self)
         self.ui.timer1.start(50)
         self.ui.timer1.timeout.connect(self.update_robot)
-        
+       
         #--------------------------------Manuales--------------------------------
         
         #--------------------------------Joystick--------------------------------
@@ -191,15 +191,11 @@ class MainWindow(QWidget):
                 for i in range(num_ejes):
                     axis_value = round(self.control.get_axis(i), 2)
                     if abs(axis_value) > 0.6:
-                        
                         if i < 4 :
-                            self.ejes[i] += axis_value * 5  # Escalar los valores de los ejes
+                            self.ejes[i] += axis_value * 2 + self.ejes[i] # Escalar los valores de los ejes
                         if i == 4 or i == 5:
                             if axis_value > 0.5:
-                                self.ejes[i] += axis_value * 5
-                    
-                                
-                
+                                self.ejes[i] += axis_value * 2 + self.ejes[i]
                 # Obtener los valores de los ejes x e y
                 x = self.ejes[0]
                 y = self.ejes[1]
@@ -214,8 +210,10 @@ class MainWindow(QWidget):
                 if 60 <= angle <= 120 or 240 <= angle <= 300:
                     self.ejes[1] = y
 
-                '''self.enviar_datos(int(self.ejes[0]),int(self.ejes[1]),int(self.ejes[2]),int(self.ejes[3]),
-                                int(self.ejes[4]),int(self.ejes[5]),int(self.ejes[3]))'''
+                
+                self.enviar_datos(int(self.ejes[0]),int(self.ejes[1]),0,int(self.ejes[3]),
+                                int(self.ejes[2]),int(self.ejes[4]),int(self.ejes[5]))
+                time.sleep(0.5)
 
                     # Crear una lista con los Labels y textos correspondientes
                 labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
@@ -225,42 +223,10 @@ class MainWindow(QWidget):
                 # Actualizar el texto para cada Label usando un bucle for
                 for i, (label, text) in enumerate(labels):
                     label.setText(f"{text} {int(self.ejes[i])}")
-                    self.actualizar_articulacion(i,255+int(self.ejes[i]))
-
-    '''def leer_entrada(self):# Actualizacion de variables del joystick
-        if self.index == 1:
-            num_ejes = 0
-            if self.index == 1: # Optimizacion de codigo por index
-                pygame.event.pump()
-                num_ejes = self.control.get_numaxes()
+                    self.actualizar_articulacion(i,450+int(self.ejes[i]))
                 
-                # Actualizar los valores de los ejes
-                for i in range(num_ejes):
-                    axis_value = round(self.control.get_axis(i), 2)
-                    if axis_value <= 0.6:
-                            self.ejes[i] += 0
-                    else:
-                        self.ejes[i] += axis_value * 15  # Escalar los valores de los ejes
-                    if i == 4 or i == 5:
-                        if axis_value <= 0.6:
-                            self.ejes[i] += 0
-                    else:
-                        self.ejes[i] += axis_value * 15  # Escalar los valores de los ejes
-                
-                self.enviar_datos(int(self.ejes[0]),int(self.ejes[1]),int(self.ejes[2]),int(self.ejes[3]),
-                                int(self.ejes[4]),int(self.ejes[5]),int(self.ejes[3]))
 
-                    # Crear una lista con los Labels y textos correspondientes
-                labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
-                        (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
-                        (self.ui.label_30, "Gatillo izquierdo"), (self.ui.label_31, "Gatillo derecho")]
-
-                # Actualizar el texto para cada Label usando un bucle for
-                for i, (label, text) in enumerate(labels):
-                    label.setText(f"{text} {int(self.ejes[i])}")
-                    self.actualizar_articulacion(i,255+int(self.ejes[i]))
-
-                    # Envio de datos para movimientos
+    '''             # Envio de datos para movimientos
                      Botones y ejes a utilizar en formato de array [i]
                         joystick izuierda     joystick derecha     boton "A"      boron "B"
                         Eje 0=0  Eje 1=-0     Eje 2=0 Eje 3=-0     Eje 4 = -1     Eje 5 = -1
@@ -284,6 +250,7 @@ class MainWindow(QWidget):
     def actualizar_articulacion(self, num_articulacion, valor_slider):
         # Convierte el valor del slider al rango de valores aceptable para la articulación
         valor_articulacion = (valor_slider-255)/255
+    
         # Actualiza la posición de la articulación en PyBullet según el número de articulación
         if num_articulacion == 1:
             p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=valor_articulacion)
@@ -437,7 +404,8 @@ class MainWindow(QWidget):
                 {pasos_motor6},\
                 {pasos_pinza},\n"
         self.ser.write(datos.encode("UTF-8")) # envía los datos al Arduino en formato de bytes
-        print(datos)
+        print("Serial " + datos)
+        
     
     # Función para animar y mostrar u ocultar el menú lateral
     def slideLeftMenu(self):
