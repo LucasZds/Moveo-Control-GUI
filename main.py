@@ -7,6 +7,7 @@ import math
 import pygame
 import pybullet as p
 import mediapipe as mp
+from math import atan2, degrees
 import webbrowser # Importar para abrir links
 from PySide6 import QtCore
 from PySide6 import QtGui
@@ -177,8 +178,56 @@ class MainWindow(QWidget):
                         (self.ui.horizontalSlider_5.value()-255), #MOTOR 5
                         (self.ui.horizontalSlider_2.value()-255), #MOTOR 6
                         (self.ui.horizontalSlider.value()-255)) #PINZA
+        
+    def leer_entrada(self):
+        # Actualizacion de variables del joystick
+        if self.index == 1:
+            num_ejes = 0
+            if self.index == 1: # Optimizacion de codigo por index
+                pygame.event.pump()
+                num_ejes = self.control.get_numaxes()
+                
+                # Actualizar los valores de los ejes
+                for i in range(num_ejes):
+                    axis_value = round(self.control.get_axis(i), 2)
+                    if abs(axis_value) > 0.6:
+                        
+                        if i < 4 :
+                            self.ejes[i] += axis_value * 5  # Escalar los valores de los ejes
+                        if i == 4 or i == 5:
+                            if axis_value > 0.5:
+                                self.ejes[i] += axis_value * 5
+                    
+                                
+                
+                # Obtener los valores de los ejes x e y
+                x = self.ejes[0]
+                y = self.ejes[1]
 
-    def leer_entrada(self):# Actualizacion de variables del joystick
+                # Calcular el ángulo a partir de los valores de los ejes x e y
+                angle = degrees(atan2(y, x)) % 360
+
+                # Comprobar si el ángulo se encuentra dentro de los rangos permitidos
+                if angle >= 30 and angle <= 330 or angle >= 150 and angle <= 330:
+                    self.ejes[0] = x
+
+                if 60 <= angle <= 120 or 240 <= angle <= 300:
+                    self.ejes[1] = y
+
+                '''self.enviar_datos(int(self.ejes[0]),int(self.ejes[1]),int(self.ejes[2]),int(self.ejes[3]),
+                                int(self.ejes[4]),int(self.ejes[5]),int(self.ejes[3]))'''
+
+                    # Crear una lista con los Labels y textos correspondientes
+                labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
+                        (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
+                        (self.ui.label_30, "Gatillo izquierdo"), (self.ui.label_31, "Gatillo derecho")]
+
+                # Actualizar el texto para cada Label usando un bucle for
+                for i, (label, text) in enumerate(labels):
+                    label.setText(f"{text} {int(self.ejes[i])}")
+                    self.actualizar_articulacion(i,255+int(self.ejes[i]))
+
+    '''def leer_entrada(self):# Actualizacion de variables del joystick
         if self.index == 1:
             num_ejes = 0
             if self.index == 1: # Optimizacion de codigo por index
@@ -212,28 +261,22 @@ class MainWindow(QWidget):
                     self.actualizar_articulacion(i,255+int(self.ejes[i]))
 
                     # Envio de datos para movimientos
-                
-            
-        ''' Botones y ejes a utilizar en formato de array [i]
-        joystick izuierda     joystick derecha     boton "A"      boron "B"
-        Eje 0=0  Eje 1=-0     Eje 2=0 Eje 3=-0     Eje 4 = -1     Eje 5 = -1
-        '''
-        
-        
-        
-        '''base_link
-        odom_joint
-        Joint_1
-        Joint_2
-        Joint_3
-        Joint_4
-        Joint_5
-        Gripper_Servo_Gear_Joint
-        Tip_Gripper_Servo_Joint
-        Gripper_Idol_Gear_Joint
-        Tip_Gripper_Idol_Joint
-        Pivot_Arm_Gripper_Servo_Joint
-        Pivot_Arm_Gripper_Idol_Joint'''
+                     Botones y ejes a utilizar en formato de array [i]
+                        joystick izuierda     joystick derecha     boton "A"      boron "B"
+                        Eje 0=0  Eje 1=-0     Eje 2=0 Eje 3=-0     Eje 4 = -1     Eje 5 = -1
+                        base_link
+                        odom_joint
+                        Joint_1
+                        Joint_2
+                        Joint_3
+                        Joint_4
+                        Joint_5
+                        Gripper_Servo_Gear_Joint
+                        Tip_Gripper_Servo_Joint
+                        Gripper_Idol_Gear_Joint
+                        Tip_Gripper_Idol_Joint
+                        Pivot_Arm_Gripper_Servo_Joint
+                        Pivot_Arm_Gripper_Idol_Joint'''
     def closeapp(self):
         self.ser.close()
         self.close()
@@ -327,8 +370,8 @@ class MainWindow(QWidget):
             # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle*-1) < 190 and int(angle*-1) > -50:
                 self.angulo = int(angle*-2)
-                valor_articulacion = (self.angulo-160)/255
-                valor_articulacion1 = (self.angulo-160)/255
+                valor_articulacion = (self.angulo-90)/255
+                valor_articulacion1 = (self.angulo-40)/255
                 # Actualiza la posición de la articulación en PyBullet
                 p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
                 p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
