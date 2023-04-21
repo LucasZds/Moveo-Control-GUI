@@ -18,7 +18,7 @@ const int motor3_step_pin = 4;
 
 const int motor4_en_pin = A6;
 const int motor4_dir_pin = A7;
-const int motor4_step_pin = 1;
+const int motor4_step_pin = A8;
 
 const int motor5_en_pin = 8;
 const int motor5_dir_pin = 9;
@@ -119,7 +119,7 @@ void loop() {
       
       motor1.moveTo(valores[0]);
       motor2.moveTo(valores[1]);
-      motor3.moveTo(valores[2]);
+      motor3.moveTo(valores[1]);
       motor4.moveTo(valores[3]);
       motor5.moveTo(valores[4]);
       motor6.moveTo(valores[5]);

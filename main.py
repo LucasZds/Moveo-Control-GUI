@@ -66,7 +66,7 @@ class MainWindow(QWidget):
 
         # Establecemos Comunicacion SERIAL
         try:
-            self.ser = serial.Serial(self.ui.Puertocom.text(), baudrate=9600) #Puerto por defecto
+            self.ser = serial.Serial("COM4", baudrate=9600) #Puerto por defecto
         except Exception as e:
             print(e)
         
@@ -95,17 +95,16 @@ class MainWindow(QWidget):
         #--------------------------------Manuales--------------------------------
         
         #--------------------------------Joystick--------------------------------
-        try:
-            pygame.init()
-            pygame.joystick.init()
-            self.control = pygame.joystick.Joystick(0)
-            self.control.init()
-            self.ejes = [0] * self.control.get_numaxes()
-            self.ui.timer2 = QTimer(self)
-            self.ui.timer2.start(60)
-            self.ui.timer2.timeout.connect(self.leer_entrada)
-        except Exception as e:
-            print(e) 
+        
+        pygame.init()
+        pygame.joystick.init()
+        self.control = pygame.joystick.Joystick(0)
+        self.control.init()
+        self.ejes = [0] * self.control.get_numaxes()
+        self.ui.timer2 = QTimer(self)
+        self.ui.timer2.start(60)
+        self.ui.timer2.timeout.connect(self.leer_entrada)
+         
         #pendiente comunicacion con arduino
         #--------------------------------Joystick--------------------------------
         
@@ -116,7 +115,7 @@ class MainWindow(QWidget):
         self.ui.horizontalSlider_4.valueChanged.connect(lambda valor: self.actualizar_articulacion(4, valor))
         self.ui.horizontalSlider_2.valueChanged.connect(lambda valor: self.actualizar_articulacion(5, valor))
         self.ui.horizontalSlider.valueChanged.connect(lambda valor: self.actualizar_articulacion(6, valor))
-        self.ui.pushButtonpara.clicked.connect()
+        self.ui.pushButtonpara.clicked.connect(self.enviodedatosparametros)
 
         #inicialmente se necesia comunicacion con arduino
         #--------------------------------Parametros--------------------------------
@@ -169,6 +168,16 @@ class MainWindow(QWidget):
         de la lista para arduino mediante comunicacion se actualiza para las labels y se deja un indice en pantalla
         
         '''
+
+    def enviodedatosparametros(self):
+        self.enviar_datos((self.ui.horizontalSlider_3.value()-255), #MOTOR 1
+                        (self.ui.horizontalSlider_6.value()-255), #MOTOR 3
+                        (self.ui.horizontalSlider_6.value()-255), #MOTOR 2
+                        (self.ui.horizontalSlider_4.value()-255), #MOTOR 4
+                        (self.ui.horizontalSlider_5.value()-255), #MOTOR 5
+                        (self.ui.horizontalSlider_2.value()-255), #MOTOR 6
+                        (self.ui.horizontalSlider.value()-255)) #PINZA
+
     def leer_entrada(self):# Actualizacion de variables del joystick
         if self.index == 1:
             num_ejes = 0
@@ -176,33 +185,23 @@ class MainWindow(QWidget):
                 pygame.event.pump()
                 num_ejes = self.control.get_numaxes()
                 
-                for i in range(num_ejes):
-                    axis_value = round(self.control.get_axis(i), 2)
-                    self.ejes[i] = axis_value * 15  # Escalar los valores de los ejes
-                    if i == 4 or i == 5:
-                        if axis_value  <= 0:
-                            self.ejes[i] = 0
-                    else:
-                        self.ejes[i] = axis_value
-
                 # Actualizar los valores de los ejes
                 for i in range(num_ejes):
                     axis_value = round(self.control.get_axis(i), 2)
-                    self.ejes[i] += axis_value * 15  # Escalar los valores de los ejes
-                    if i == 4 or i == 5:
-                        if axis_value  <= 0:
-                            self.ejes[i] = 0
+                    if axis_value <= 0.6:
+                            self.ejes[i] += 0
                     else:
-                        self.ejes[i] += axis_value
-                self.enviar_datos(int(self.ejes[0]),
-                int(self.ejes[1]),
-                int(self.ejes[2]),
-                int(self.ejes[3]),
-                int(self.ejes[4]),
-                int(self.ejes[5]),
-                int(self.ejes[3]))
+                        self.ejes[i] += axis_value * 15  # Escalar los valores de los ejes
+                    if i == 4 or i == 5:
+                        if axis_value <= 0.6:
+                            self.ejes[i] += 0
+                    else:
+                        self.ejes[i] += axis_value * 15  # Escalar los valores de los ejes
+                
+                self.enviar_datos(int(self.ejes[0]),int(self.ejes[1]),int(self.ejes[2]),int(self.ejes[3]),
+                                int(self.ejes[4]),int(self.ejes[5]),int(self.ejes[3]))
 
-                    # Crear una lista de tuplas con los Labels y textos correspondientes
+                    # Crear una lista con los Labels y textos correspondientes
                 labels = [(self.ui.label_26, "Joystick ix"), (self.ui.label_27, "Joystick iy"),
                         (self.ui.label_28, "Joystick dx"), (self.ui.label_29, "Joystick dy"),
                         (self.ui.label_30, "Gatillo izquierdo"), (self.ui.label_31, "Gatillo derecho")]
@@ -255,7 +254,6 @@ class MainWindow(QWidget):
             p.setJointMotorControl2(p.objeto, 5, p.POSITION_CONTROL, targetPosition=valor_articulacion)
         elif num_articulacion == 6:
             p.setJointMotorControl2(p.objeto, 6, p.POSITION_CONTROL, targetPosition=valor_articulacion)
-
         
     def update_robot(self):
         # Configura la cámara
@@ -315,11 +313,11 @@ class MainWindow(QWidget):
             # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle_body*-1) < 90 and int(angle_body*-1) > -50:
                 self.angulocuerpo=angle_body*10
-                self.enviar_datos(0,
+                self.enviar_datos(int(self.angulocuerpo-160),
                         0,
                         0,
                         0,
-                        int(self.angulocuerpo)+175,
+                        0,
                         0,
                         0,)
                 p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=self.angulocuerpo)
@@ -329,14 +327,13 @@ class MainWindow(QWidget):
             # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle*-1) < 190 and int(angle*-1) > -50:
                 self.angulo = int(angle*-2)
-                
-                valor_articulacion = (self.angulo-50)/255
-                valor_articulacion1 = (self.angulo-80)/255
+                valor_articulacion = (self.angulo-160)/255
+                valor_articulacion1 = (self.angulo-160)/255
                 # Actualiza la posición de la articulación en PyBullet
                 p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
                 p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
                 self.enviar_datos(0,
-                        0,
+                        int(self.angulo),
                         int(self.angulo),
                         0,
                         0,
@@ -389,13 +386,13 @@ class MainWindow(QWidget):
                 pasos_motor5,
                 pasos_motor6,
                 pasos_pinza):
-        datos = f"{pasos_motor1*100},\
-                {pasos_motor2*100},\
-                {pasos_motor3*100},\
-                {pasos_motor4*100},\
-                {pasos_motor5*100},\
-                {pasos_motor6*100},\
-                {pasos_pinza*100},\n"
+        datos = f"{pasos_motor1},\
+                {pasos_motor2},\
+                {pasos_motor3},\
+                {pasos_motor4},\
+                {pasos_motor5},\
+                {pasos_motor6},\
+                {pasos_pinza},\n"
         self.ser.write(datos.encode("UTF-8")) # envía los datos al Arduino en formato de bytes
         print(datos)
     
