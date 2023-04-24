@@ -605,7 +605,13 @@ class Ui_Widget(object):
 
         self.verticalLayout_16.addWidget(self.frame_18)
 
-        self.pushButtonpara = QPushButton(self.frame_16)
+        self.frame_19 = QFrame(self.frame_16)
+        self.frame_19.setObjectName(u"frame_19")
+        self.frame_19.setFrameShape(QFrame.StyledPanel)
+        self.frame_19.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_11 = QHBoxLayout(self.frame_19)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.pushButtonpara = QPushButton(self.frame_19)
         self.pushButtonpara.setObjectName(u"pushButtonpara")
         self.pushButtonpara.setFont(font)
         self.pushButtonpara.setStyleSheet(u"QPushButton{\n"
@@ -616,12 +622,14 @@ class Ui_Widget(object):
 "background-color:rgb(0,26,39);\n"
 "}")
 
-        self.verticalLayout_16.addWidget(self.pushButtonpara)
+        self.horizontalLayout_11.addWidget(self.pushButtonpara)
 
-        self.frame_19 = QFrame(self.frame_16)
-        self.frame_19.setObjectName(u"frame_19")
-        self.frame_19.setFrameShape(QFrame.StyledPanel)
-        self.frame_19.setFrameShadow(QFrame.Raised)
+        self.pushButtonres = QPushButton(self.frame_19)
+        self.pushButtonres.setObjectName(u"pushButtonres")
+        self.pushButtonres.setFont(font)
+
+        self.horizontalLayout_11.addWidget(self.pushButtonres)
+
 
         self.verticalLayout_16.addWidget(self.frame_19)
 
@@ -1076,6 +1084,7 @@ class Ui_Widget(object):
         self.label_24.setText(QCoreApplication.translate("Widget", u"Articulacion 2", None))
         self.label_25.setText(QCoreApplication.translate("Widget", u"Articulacion 1", None))
         self.pushButtonpara.setText(QCoreApplication.translate("Widget", u"Enviar Datos", None))
+        self.pushButtonres.setText(QCoreApplication.translate("Widget", u"RESET", None))
         self.label_13.setText(QCoreApplication.translate("Widget", u"Webcam con vectores del brazo", None))
         self.label_14.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))
         self.labelrob_2.setText(QCoreApplication.translate("Widget", u"3D DESIGN", None))

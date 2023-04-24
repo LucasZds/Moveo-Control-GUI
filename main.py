@@ -117,7 +117,7 @@ class MainWindow(QWidget):
         self.ui.horizontalSlider_2.valueChanged.connect(lambda valor: self.actualizar_articulacion(5, valor))
         self.ui.horizontalSlider.valueChanged.connect(lambda valor: self.actualizar_articulacion(6, valor))
         self.ui.pushButtonpara.clicked.connect(self.enviodedatosparametros)
-
+        self.ui.pushButtonres.clicked.connect(self.enviodedatosparametrosres)
         #inicialmente se necesia comunicacion con arduino
         #--------------------------------Parametros--------------------------------
 
@@ -131,7 +131,7 @@ class MainWindow(QWidget):
         self.ui.timer = QTimer(self)
         self.ui.timer.start(60)
         self.ui.timer.timeout.connect(self.update_image)
-        
+        self.anguloanterior = 0
         #queda comunicacion a arduino
         
         #--------------------------------Camara--------------------------------
@@ -169,7 +169,21 @@ class MainWindow(QWidget):
         de la lista para arduino mediante comunicacion se actualiza para las labels y se deja un indice en pantalla
         
         '''
-
+    def enviodedatosparametrosres(self):
+        self.ui.horizontalSlider.setValue(255)
+        self.ui.horizontalSlider_2.setValue(255)
+        self.ui.horizontalSlider_3.setValue(255)
+        self.ui.horizontalSlider_4.setValue(255)
+        self.ui.horizontalSlider_5.setValue(255)
+        self.ui.horizontalSlider_6.setValue(255)
+        
+        self.enviar_datos((self.ui.horizontalSlider_3.value()-255), #MOTOR 1
+                        (self.ui.horizontalSlider_6.value()-255), #MOTOR 3
+                        (self.ui.horizontalSlider_6.value()-255), #MOTOR 2
+                        (self.ui.horizontalSlider_4.value()-255), #MOTOR 4
+                        (self.ui.horizontalSlider_5.value()-255), #MOTOR 5
+                        (self.ui.horizontalSlider_2.value()-255), #MOTOR 6
+                        (self.ui.horizontalSlider.value()-255)) #PINZA
     def enviodedatosparametros(self):
         self.enviar_datos((self.ui.horizontalSlider_3.value()-255), #MOTOR 1
                         (self.ui.horizontalSlider_6.value()-255), #MOTOR 3
@@ -336,19 +350,14 @@ class MainWindow(QWidget):
             
             # Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle*-1) < 190 and int(angle*-1) > -50:
-                self.angulo = int(angle*-2)
-                valor_articulacion = (self.angulo-90)/255
-                valor_articulacion1 = (self.angulo-40)/255
-                # Actualiza la posición de la articulación en PyBullet
-                p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
-                p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
-                self.enviar_datos(0,
-                        int(self.angulo),
-                        int(self.angulo),
-                        0,
-                        0,
-                        0,
-                        0)
+                if angle > (self.anguloanterior + 8) or angle < (self.anguloanterior - 8 ):
+                    self.anguloanterior,self.angulo = int(angle*-2)
+                    valor_articulacion = (self.angulo-90)/255
+                    valor_articulacion1 = (self.angulo-40)/255
+                    # Actualiza la posición de la articulación en PyBullet
+                    p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
+                    p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
+                    self.enviar_datos(0,int(self.angulo),0,(int(self.angulo)-10),0,0,0)
 
             # Mostrar los puntos de los brazos y la línea del brazo derecho
             x1, y1 = int(wrist.x * img.shape[1]), int(wrist.y * img.shape[0])
