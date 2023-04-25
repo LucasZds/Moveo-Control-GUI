@@ -186,11 +186,11 @@ class MainWindow(QWidget):
                         (self.ui.horizontalSlider.value()-255)) #PINZA
     def enviodedatosparametros(self):
         self.enviar_datos((self.ui.horizontalSlider_3.value()-255), #MOTOR 1
-                        (self.ui.horizontalSlider_6.value()-255), #MOTOR 3
+                        ((self.ui.horizontalSlider_6.value()-255)*-1), #MOTOR 3
                         (self.ui.horizontalSlider_6.value()-255), #MOTOR 2
-                        (self.ui.horizontalSlider_4.value()-255), #MOTOR 4
+                        ((self.ui.horizontalSlider_4.value()-255)*-1), #MOTOR 4
                         (self.ui.horizontalSlider_5.value()-255), #MOTOR 5
-                        (self.ui.horizontalSlider_2.value()-255), #MOTOR 6
+                        ((self.ui.horizontalSlider_2.value()-255)*-1), #MOTOR 6
                         (self.ui.horizontalSlider.value()-255)) #PINZA
         
     def leer_entrada(self):
@@ -206,10 +206,10 @@ class MainWindow(QWidget):
                     axis_value = round(self.control.get_axis(i), 2)
                     if abs(axis_value) > 0.6:
                         if i < 4 :
-                            self.ejes[i] += axis_value * 2 + self.ejes[i] # Escalar los valores de los ejes
+                            self.ejes[i] += axis_value + self.ejes[i]
                         if i == 4 or i == 5:
                             if axis_value > 0.5:
-                                self.ejes[i] += axis_value * 2 + self.ejes[i]
+                                self.ejes[i] += axis_value
                 # Obtener los valores de los ejes x e y
                 x = self.ejes[0]
                 y = self.ejes[1]
@@ -334,30 +334,34 @@ class MainWindow(QWidget):
             cv2.putText(img, f"Angulo rotacion: {int(angle_body*-1)}", (50, 100), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)
             cv2.putText(img, f"Angulo brazo: {int(angle*-1)}", (50, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 2)  
             
-            # Si el ángulo del cuerpo es adecuado, actualizamos variable
+            '''# Si el ángulo del cuerpo es adecuado, actualizamos variable
             if int(angle_body*-1) < 90 and int(angle_body*-1) > -50:
-                self.angulocuerpo=angle_body*10
-                self.enviar_datos(int(self.angulocuerpo-160),
+                self.angulocuerpo=angle_body*-1
+                self.enviar_datos(int(self.angulocuerpo),
                         0,
                         0,
                         0,
                         0,
                         0,
                         0,)
-                p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=self.angulocuerpo)
+                p.setJointMotorControl2(p.objeto, 1, p.POSITION_CONTROL, targetPosition=self.angulocuerpo)'''
 
             
             
             # Si el ángulo del cuerpo es adecuado, actualizamos variable
-            if int(angle*-1) < 190 and int(angle*-1) > -50:
-                if angle > (self.anguloanterior + 8) or angle < (self.anguloanterior - 8 ):
-                    self.anguloanterior,self.angulo = int(angle*-2)
+            
+            if int(angle) < 190 and int(angle) > -20:
+                if (angle*-1) > (self.anguloanterior + 5) or (angle*-1) < (self.anguloanterior - 5 ):
+                    self.angulo = int(angle*-1)
+                    self.anguloanterior = int(angle*-1) 
                     valor_articulacion = (self.angulo-90)/255
                     valor_articulacion1 = (self.angulo-40)/255
                     # Actualiza la posición de la articulación en PyBullet
                     p.setJointMotorControl2(p.objeto, 2, p.POSITION_CONTROL, targetPosition=valor_articulacion)
                     p.setJointMotorControl2(p.objeto, 3, p.POSITION_CONTROL, targetPosition=valor_articulacion1)
-                    self.enviar_datos(0,int(self.angulo),0,(int(self.angulo)-10),0,0,0)
+                    self.enviar_datos(0,int(self.angulo),0,0,0,0,0)
+                    time.sleep(0.05)
+                    
 
             # Mostrar los puntos de los brazos y la línea del brazo derecho
             x1, y1 = int(wrist.x * img.shape[1]), int(wrist.y * img.shape[0])
